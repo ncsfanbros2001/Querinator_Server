@@ -5,6 +5,7 @@ using JWT_Demo.Models.Entity;
 using JWT_Demo.Models.Helper;
 using MediatR;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace JWT_Demo.Application
@@ -37,7 +38,7 @@ namespace JWT_Demo.Application
                         return API_Response.Failure("You must enter a title to save this query", HttpStatusCode.BadRequest);
                     }
 
-                    QueryToSave queryFromDb = _db.SavedQuery.FirstOrDefault(x => x.Query.ToLower() == 
+                    QueryToSave? queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Query.ToLower() == 
                         request.queryDTO.Query.ToLower())!;
 
                     if (queryFromDb != null)

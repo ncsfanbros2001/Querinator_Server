@@ -14,7 +14,9 @@ namespace JWT_Demo.Application
         public class Command : IRequest<API_Response>
         {
             public Guid Id { get; set; }
-            public QueryToSave QueryToSave { get; set; }
+            // public SaveQueryDTO saveQueryDTO { get; set; }
+
+            public SaveQueryDTO saveQueryDTO { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, API_Response>
@@ -33,10 +35,17 @@ namespace JWT_Demo.Application
 
                 if (queryToUpdate == null)
                 {
-                    return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound); 
+                    return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
                 }
 
-                _mapper.Map(request.QueryToSave, queryToUpdate);
+                QueryToSave infoToUpdate = new()
+                {
+                    Id = request.Id,
+                    Title = request.saveQueryDTO.Title,
+                    Query = request.saveQueryDTO.Query
+                };
+
+                _mapper.Map(infoToUpdate, queryToUpdate);
 
                 var result = await _db.SaveChangesAsync();
 
