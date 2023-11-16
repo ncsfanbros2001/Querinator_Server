@@ -34,44 +34,13 @@ namespace JWT_Demo.Application
                     {
                         userList = connection.Query(request.query);
                     }
-
+                    await Task.Delay(3000);                    
                     return API_Response.Success(userList);
                 }
                 catch (Exception exception)
                 {
                     return API_Response.Failure(exception.Message, HttpStatusCode.BadRequest);
                 }
-
-                //try
-                //{
-                //    object userList;
-
-                //    using (var connection = new SqlConnection(
-                //        _configuration.GetConnectionString("DB_To_Query_Connection")))
-                //    {
-                //        // Create a task to execute the query asynchronously
-                //        var queryTask = Task.Run(() => connection.Query(request.query), cancellationToken);
-
-                //        // Wait for either the query task or a delay of 5 seconds
-                //        var completedTask = await Task.WhenAny(queryTask, Task.Delay(500, cancellationToken));
-
-                //        // Check if the query task completed within 5 seconds
-                //        if (completedTask != queryTask)
-                //        {
-                //            // Throw a custom exception indicating timeout
-                //            cancellationToken.ThrowIfCancellationRequested();
-                //        }
-
-                //        // Assign the query result to userList
-                //        userList = queryTask.Result;
-                //    }
-
-                //    return API_Response.Success(userList);
-                //}
-                //catch (Exception exception)
-                //{
-                //    return API_Response.Failure(exception.Message, HttpStatusCode.BadRequest);
-                //}
             }
         }
     }
