@@ -34,7 +34,7 @@ namespace JWT_Demo.Application
                     {
                         userList = connection.Query(request.query);
                     }
-                    await Task.Delay(3000);                    
+                  
                     return API_Response.Success(userList);
                 }
                 catch (Exception exception)

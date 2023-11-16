@@ -1,9 +1,11 @@
 ﻿using JWT_Demo.Models.Entity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Models.Entity;
 
 namespace JWT_Demo.Data
 {
-    public class OperatorDbContext : DbContext
+    public class OperatorDbContext : IdentityDbContext<AppUser>
     {
         public OperatorDbContext(DbContextOptions<OperatorDbContext> options) : base (options)
         {
