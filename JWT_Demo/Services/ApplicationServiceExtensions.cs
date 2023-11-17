@@ -1,6 +1,8 @@
 ﻿using JWT_Demo.Application;
 using JWT_Demo.Data;
 using JWT_Demo.HelperMethods;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace JWT_Demo.Services
@@ -9,7 +11,12 @@ namespace JWT_Demo.Services
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration) 
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 

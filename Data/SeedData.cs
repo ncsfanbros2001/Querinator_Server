@@ -1,11 +1,6 @@
 ﻿using JWT_Demo.Data;
 using Microsoft.AspNetCore.Identity;
 using Models.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -15,7 +10,7 @@ namespace Data
         {
             if (!userManager.Users.Any())
             {
-                var users = new List<AppUser>()
+                var users = new List<AppUser>
                 {
                     new AppUser
                     {
@@ -39,7 +34,7 @@ namespace Data
 
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "pa$$w0rd");
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
         }
