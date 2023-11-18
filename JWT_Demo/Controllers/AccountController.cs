@@ -93,9 +93,8 @@ namespace JWT_Demo.Controllers
             return new UserDTO
             {
                 DisplayName = user.DisplayName,
-                Image = null,
                 Token = _tokenService.CreateToken(user),
-                Username = user.UserName
+                Username = user.UserName!
             };
         }
     }
