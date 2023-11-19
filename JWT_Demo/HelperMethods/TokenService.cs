@@ -18,12 +18,13 @@ namespace JWT_Demo.HelperMethods
         {
             var userClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName!),
-                new Claim(ClaimTypes.NameIdentifier, user.Id!),
+                new Claim("username", user.UserName!),
+                new Claim("displayName", user.DisplayName),
+                new Claim("id", user.Id),
                 new Claim(ClaimTypes.Email, user.Email!),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
