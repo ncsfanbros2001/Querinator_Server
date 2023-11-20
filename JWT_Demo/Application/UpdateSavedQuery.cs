@@ -36,15 +36,16 @@ namespace JWT_Demo.Application
             {
                 try
                 {
-                    QueryToSave? queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
+                    QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
 
                     if (queryToUpdate == null)
                     {
                         return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
                     }
 
-                    QueryToSave? queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Query.ToLower() ==
-                        request.saveQueryDTO.Query.ToLower() && x.Query.ToLower() != queryToUpdate.Query.ToLower())!;
+                    QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
+                        x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
+                        x.Query.ToLower() != queryToUpdate.Query.ToLower())!;
 
                     if (queryFromDb != null)
                     {
@@ -61,7 +62,8 @@ namespace JWT_Demo.Application
                     {
                         Id = request.Id,
                         Title = request.saveQueryDTO.Title,
-                        Query = request.saveQueryDTO.Query
+                        Query = request.saveQueryDTO.Query,
+                        UserId = request.saveQueryDTO.UserId
                     };
 
                     _mapper.Map(infoToUpdate, queryToUpdate);
@@ -74,7 +76,7 @@ namespace JWT_Demo.Application
                     }
                     else
                     {
-                        return API_Response.Failure("Save changes failed", HttpStatusCode.BadRequest);
+                        return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
                     }
                 }
                 catch

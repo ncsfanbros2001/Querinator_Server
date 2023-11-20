@@ -8,7 +8,6 @@ namespace JWT_Demo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class BaseController : ControllerBase
     {
         private IMediator _mediator;

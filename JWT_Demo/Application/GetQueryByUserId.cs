@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JWT_Demo.Application
 {
-    public class GetAllSavedQueries
+    public class GetQueryByUserId
     {
         public class Query : IRequest<API_Response>
         {
-
+            public string UserId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
             private readonly OperatorDbContext _db;
-
             public Handler(OperatorDbContext db)
             {
                 _db = db;
@@ -23,7 +22,7 @@ namespace JWT_Demo.Application
 
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return API_Response.Success(await _db.SavedQuery.ToListAsync());
+                return API_Response.Success(await _db.SavedQuery.Where(x => x.UserId == request.UserId).ToListAsync());
             }
         }
     }

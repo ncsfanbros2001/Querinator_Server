@@ -20,7 +20,6 @@ namespace JWT_Demo.Application
         public class Handler : IRequestHandler<Command, API_Response>
         {
             private readonly OperatorDbContext _db;
-
             private readonly IConfiguration _configuration;
 
             public Handler(OperatorDbContext db, IConfiguration configuration)
@@ -35,11 +34,15 @@ namespace JWT_Demo.Application
                 {
                     if (request.queryDTO.Title == "")
                     {
-                        return API_Response.Failure("You must enter a title to save this query", HttpStatusCode.BadRequest);
+                        return API_Response.Failure("You must enter a title to save this query", 
+                            HttpStatusCode.BadRequest);
                     }
 
-                    QueryToSave? queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Query.ToLower() == 
-                        request.queryDTO.Query.ToLower())!;
+                    // Check if is there any saved query which has the same query 
+                    // and userId is the same as the id of the current logged in user
+                    QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
+                        x => x.Query.ToLower() == request.queryDTO.Query.ToLower() && 
+                        x.UserId.ToLower() == request.queryDTO.UserId.ToLower())!;
 
                     if (queryFromDb != null)
                     {
@@ -56,10 +59,10 @@ namespace JWT_Demo.Application
                     {
                         Id = new Guid(),
                         Title = request.queryDTO.Title,
-                        Query = request.queryDTO.Query
+                        Query = request.queryDTO.Query,
+                        UserId = request.queryDTO.UserId,
                     };
 
-                    // await HelperMethods.TimeLimiterForUpdate(_db.SavedQuery.Add(queryToSave));
                     await _db.SavedQuery.AddAsync(queryToSave);
                     await _db.SaveChangesAsync();
 

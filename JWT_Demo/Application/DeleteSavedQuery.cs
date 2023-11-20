@@ -25,24 +25,17 @@ namespace JWT_Demo.Application
 
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                try
-                {
-                    QueryToSave? queryToDelete = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
+                QueryToSave queryToDelete = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
 
-                    if (queryToDelete == null)
-                    {
-                        throw new Exception();
-                    }
-
-                    _db.SavedQuery.Remove(queryToDelete);
-                    await _db.SaveChangesAsync();
-
-                    return API_Response.Success(null);
-                }
-                catch
+                if (queryToDelete == null)
                 {
                     return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
                 }
+
+                _db.SavedQuery.Remove(queryToDelete);
+                await _db.SaveChangesAsync();
+
+                return API_Response.Success(null);
             }
         }
     }
