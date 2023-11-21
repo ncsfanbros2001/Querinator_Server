@@ -15,16 +15,19 @@ namespace JWT_Demo.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, 
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _roleManager = roleManager;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<UserDTO>> Login([FromBody]LoginDTO loginDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginDTO.Email);
 
@@ -47,8 +50,8 @@ namespace JWT_Demo.Controllers
         }
 
         [HttpPost("register")]
-        [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
+        [Authorize(Roles = Statics.AdminRole)]
+        public async Task<ActionResult<UserDTO>> Register([FromBody]RegisterDTO registerDTO)
         {
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDTO.Username))
             {
@@ -71,6 +74,15 @@ namespace JWT_Demo.Controllers
 
             if (result.Succeeded)
             {
+                if (!_roleManager.RoleExistsAsync(Statics.AdminRole).GetAwaiter().GetResult())
+                // Create "admin" and "customer" role if doesn't exist
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(Statics.AdminRole));
+                    await _roleManager.CreateAsync(new IdentityRole(Statics.CustomerRole));
+                }
+
+                await _userManager.AddToRoleAsync(user, Statics.CustomerRole);
+
                 return CreateUserObject(user);
             }
             else
@@ -86,6 +98,13 @@ namespace JWT_Demo.Controllers
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email)!);
 
             return CreateUserObject(user);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ThrowUnauthorized()
+        {
+            return Unauthorized();
         }
 
         private UserDTO CreateUserObject(AppUser user)

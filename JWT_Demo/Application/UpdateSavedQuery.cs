@@ -34,54 +34,54 @@ namespace JWT_Demo.Application
             }
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
+                QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
+
+                if (queryToUpdate == null)
+                {
+                    return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
+                }
+
+                QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
+                    x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
+                    x.UserId.ToLower() == request.saveQueryDTO.UserId.ToLower())!;
+
+                if (queryFromDb != null)
+                {
+                    return API_Response.Failure("This query has been saved before", HttpStatusCode.BadRequest);
+                }
+
                 try
                 {
-                    QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
-
-                    if (queryToUpdate == null)
-                    {
-                        return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
-                    }
-
-                    QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
-                        x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
-                        x.Query.ToLower() != queryToUpdate.Query.ToLower())!;
-
-                    if (queryFromDb != null)
-                    {
-                        return API_Response.Failure("This query has been saved before", HttpStatusCode.BadRequest);
-                    }
-
                     await using (var connection = new SqlConnection(
-                            _configuration.GetConnectionString("DB_To_Query_Connection")))
+                        _configuration.GetConnectionString("DB_To_Query_Connection")))
                     {
                         await connection.ExecuteAsync(request.saveQueryDTO.Query);
-                    }
-
-                    QueryToSave infoToUpdate = new()
-                    {
-                        Id = request.Id,
-                        Title = request.saveQueryDTO.Title,
-                        Query = request.saveQueryDTO.Query,
-                        UserId = request.saveQueryDTO.UserId
-                    };
-
-                    _mapper.Map(infoToUpdate, queryToUpdate);
-
-                    var result = await _db.SaveChangesAsync();
-
-                    if (result > 0)
-                    {
-                        return API_Response.Success(null);
-                    }
-                    else
-                    {
-                        return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
                     }
                 }
                 catch
                 {
                     return API_Response.Failure("This query is invalid", HttpStatusCode.BadRequest);
+                }
+
+                QueryToSave infoToUpdate = new()
+                {
+                    Id = request.Id,
+                    Title = request.saveQueryDTO.Title,
+                    Query = request.saveQueryDTO.Query,
+                    UserId = request.saveQueryDTO.UserId
+                };
+
+                _mapper.Map(infoToUpdate, queryToUpdate);
+
+                var result = await _db.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return API_Response.Success(null);
+                }
+                else
+                {
+                    return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
                 }
             }
         }

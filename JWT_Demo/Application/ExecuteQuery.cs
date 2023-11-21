@@ -25,22 +25,22 @@ namespace JWT_Demo.Application
 
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
+                object userList;
+
                 try
                 {
-                    object userList;
-
                     await using (var connection = new SqlConnection(
                         _configuration.GetConnectionString("DB_To_Query_Connection")))
                     {
                         userList = connection.Query(request.query);
                     }
-                  
-                    return API_Response.Success(userList);
                 }
                 catch (Exception exception)
                 {
                     return API_Response.Failure(exception.Message, HttpStatusCode.BadRequest);
                 }
+
+                return API_Response.Success(userList);
             }
         }
     }

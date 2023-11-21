@@ -1,6 +1,7 @@
 ﻿using JWT_Demo.Data;
 using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Models.Entity;
 using System.Text;
@@ -16,7 +17,9 @@ namespace JWT_Demo.Services
                 options.Password.RequireNonAlphanumeric = false;
                 options.User.RequireUniqueEmail = true;
 
-            }).AddEntityFrameworkStores<OperatorDbContext>();
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<OperatorDbContext>();
 
             services.AddScoped<TokenService>();
 

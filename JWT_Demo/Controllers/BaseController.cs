@@ -1,6 +1,5 @@
 ﻿using JWT_Demo.Models.Helper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -24,9 +23,13 @@ namespace JWT_Demo.Controllers
 
             if (response.IsSuccess == false)
             {
-                if (response.IsSuccess == false && response.StatusCode == HttpStatusCode.NotFound)
+                if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return NotFound(response);
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return Unauthorized(response);
                 }
                 else
                 {

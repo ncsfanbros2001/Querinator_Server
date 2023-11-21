@@ -4,6 +4,9 @@ namespace JWT_Demo.HelperMethods
 {
     public static class Statics
     {
+        public const string AdminRole = "admin";
+        public const string CustomerRole = "customer";
+
         public static async Task TimeLimiterForGet(Task task)
         {
             // Start the time measurement
@@ -21,11 +24,6 @@ namespace JWT_Demo.HelperMethods
 
             // Stop the timer
             stopwatch.Stop();
-        }
-
-        public static async Task TimeLimiterForUpdate(Task task)
-        {
-
         }
     }
 }

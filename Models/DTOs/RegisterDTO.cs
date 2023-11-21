@@ -18,5 +18,8 @@ namespace Models.DTOs
 
         [Required]
         public string Username { get; set; }
+
+        [Required]
+        public string Role { get; set; }
     }
 }
