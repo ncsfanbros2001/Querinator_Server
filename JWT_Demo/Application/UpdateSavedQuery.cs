@@ -43,7 +43,8 @@ namespace JWT_Demo.Application
 
                 QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
-                    x.UserId.ToLower() == request.saveQueryDTO.UserId.ToLower())!;
+                    x.UserId.ToLower() == request.saveQueryDTO.UserId.ToLower() &&
+                    x.Title.ToLower() == request.saveQueryDTO.Title.ToLower())!;
 
                 if (queryFromDb != null)
                 {

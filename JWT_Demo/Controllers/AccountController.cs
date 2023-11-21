@@ -35,7 +35,7 @@ namespace JWT_Demo.Controllers
 
             if (user == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
@@ -46,7 +46,7 @@ namespace JWT_Demo.Controllers
             }
             else
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
         }
@@ -55,6 +55,11 @@ namespace JWT_Demo.Controllers
         [Authorize(Roles = Statics.AdminRole)]
         public async Task<ActionResult<UserDTO>> Register([FromBody]RegisterDTO registerDTO)
         {
+            if (registerDTO.Password != registerDTO.ConfirmPassword)
+            {
+                return BadRequest("Both Password fields must be the same");
+            }
+
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDTO.Username))
             {
                 return BadRequest("This username is already taken");
@@ -92,6 +97,13 @@ namespace JWT_Demo.Controllers
             }
         }
 
+        [HttpGet("unauthorized")]
+        [Authorize]
+        public ActionResult CheckUnauthorized()
+        {
+            return Unauthorized();
+        }
+
         [HttpGet("currentUser")]
         [Authorize]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
@@ -109,12 +121,6 @@ namespace JWT_Demo.Controllers
                 Token = _tokenService.CreateToken(user),
                 Username = user.UserName!
             };
-        }
-
-        [HttpGet("unauthorized")]
-        public ActionResult GetUnauthorised()
-        {
-            return Unauthorized();
         }
     }
 }
