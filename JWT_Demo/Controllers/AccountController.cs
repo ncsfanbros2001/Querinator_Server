@@ -1,10 +1,12 @@
 ﻿using JWT_Demo.HelperMethods;
+using JWT_Demo.Models.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
+using System.Net;
 using System.Security.Claims;
 
 namespace JWT_Demo.Controllers
@@ -75,7 +77,6 @@ namespace JWT_Demo.Controllers
             if (result.Succeeded)
             {
                 if (!_roleManager.RoleExistsAsync(Statics.AdminRole).GetAwaiter().GetResult())
-                // Create "admin" and "customer" role if doesn't exist
                 {
                     await _roleManager.CreateAsync(new IdentityRole(Statics.AdminRole));
                     await _roleManager.CreateAsync(new IdentityRole(Statics.CustomerRole));
@@ -91,20 +92,13 @@ namespace JWT_Demo.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("currentUser")]
         [Authorize]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email)!);
 
             return CreateUserObject(user);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ThrowUnauthorized()
-        {
-            return Unauthorized();
         }
 
         private UserDTO CreateUserObject(AppUser user)
@@ -115,6 +109,12 @@ namespace JWT_Demo.Controllers
                 Token = _tokenService.CreateToken(user),
                 Username = user.UserName!
             };
+        }
+
+        [HttpGet("unauthorized")]
+        public ActionResult GetUnauthorised()
+        {
+            return Unauthorized();
         }
     }
 }
