@@ -14,6 +14,13 @@ namespace JWT_Demo.Controllers.DerivedController
             return HandleResult(await Mediator.Send(new ExecuteQuery.Query { query = queryString }));
         }
 
+        [HttpGet("tableName")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetAllTableName()
+        {
+            return HandleResult(await Mediator.Send(new GetAllTableName.Query { }));
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<ActionResult> GetAllSavedQueries()
