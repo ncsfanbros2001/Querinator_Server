@@ -15,7 +15,7 @@ namespace JWT_Demo.Controllers.DerivedController
         }
 
         [HttpGet("tableName")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult> GetAllTableName()
         {
             return HandleResult(await Mediator.Send(new GetAllTableName.Query { }));

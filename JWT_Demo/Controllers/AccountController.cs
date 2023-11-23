@@ -1,13 +1,13 @@
-﻿using JWT_Demo.HelperMethods;
-using JWT_Demo.Models.Helper;
+﻿using AutoMapper;
+using JWT_Demo.Data;
+using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
-using System.Net;
-using System.Security.Claims;
 
 namespace JWT_Demo.Controllers
 {
@@ -18,14 +18,17 @@ namespace JWT_Demo.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly OperatorDbContext _db;
 
         public AccountController(UserManager<AppUser> userManager, TokenService tokenService, 
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, OperatorDbContext db)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
+            _db = db;
         }
+
 
         [HttpPost("login")]
         [AllowAnonymous]
@@ -35,21 +38,29 @@ namespace JWT_Demo.Controllers
 
             if (user == null)
             {
-                return BadRequest();
+                return BadRequest("Incorrect Username or Password");
             }
 
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
 
             if (result)
             {
-                return CreateUserObject(user);
+                if (user.IsLocked == true)
+                {
+                    return BadRequest("Sorry but this account has been locked");
+                }
+                else
+                {
+                    return CreateUserObject(user);
+                }
             }
             else
             {
-                return BadRequest();
+                return BadRequest("Incorrect Username or Password");
             }
 
         }
+
 
         [HttpPost("register")]
         [Authorize(Roles = Statics.AdminRole)]
@@ -97,6 +108,7 @@ namespace JWT_Demo.Controllers
             }
         }
 
+
         [HttpGet("unauthorized")]
         [Authorize]
         public ActionResult CheckUnauthorized()
@@ -104,14 +116,43 @@ namespace JWT_Demo.Controllers
             return Unauthorized();
         }
 
-        [HttpGet("currentUser")]
-        [Authorize]
-        public async Task<ActionResult<UserDTO>> GetCurrentUser()
-        {
-            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email)!);
 
-            return CreateUserObject(user);
+        [HttpGet("lockAndUnlock")]
+        // [Authorize(Roles = Statics.AdminRole)]
+        [AllowAnonymous]
+        public async Task<ActionResult> LockAndUnlockAccount(string userId)
+        {
+            var userToUpdate = await _userManager.FindByIdAsync(userId);
+
+            if (userToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            userToUpdate.IsLocked = !userToUpdate.IsLocked;
+
+            var result = await _userManager.UpdateAsync(userToUpdate);
+
+            if (result.Succeeded)
+            {
+                return Ok("Successfully");
+            }
+            else
+            {
+                return BadRequest("Failed");
+            }
         }
+
+
+        [HttpGet("getUsers")]
+        // [Authorize(Roles = Statics.AdminRole)]
+        [AllowAnonymous]
+        public ActionResult GetAllUsers()
+        {
+            var userList = _userManager.Users;
+            return Ok(userList);
+        }
+
 
         private UserDTO CreateUserObject(AppUser user)
         {
