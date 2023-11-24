@@ -7,11 +7,11 @@ namespace JWT_Demo.Controllers.DerivedController
 {
     public class QueryController : BaseController
     {
-        [HttpGet("executeQuery/{queryString}")]
+        [HttpGet("executeQuery/{queryString}/{userRole}")]
         [Authorize]
-        public async Task<IActionResult> ExecuteQuery(string queryString)
+        public async Task<IActionResult> ExecuteQuery(string queryString, string userRole)
         {
-            return HandleResult(await Mediator.Send(new ExecuteQuery.Query { query = queryString }));
+            return HandleResult(await Mediator.Send(new ExecuteQuery.Query { query = queryString, role = userRole }));
         }
 
         [HttpGet("tableName")]

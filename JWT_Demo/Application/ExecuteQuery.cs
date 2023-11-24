@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using JWT_Demo.Data;
+using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
 using Microsoft.Data.SqlClient;
@@ -12,6 +13,7 @@ namespace JWT_Demo.Application
         public class Query : IRequest<API_Response>
         {
             public string query { get; set; }
+            public string role { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
@@ -32,7 +34,14 @@ namespace JWT_Demo.Application
                     await using (var connection = new SqlConnection(
                         _configuration.GetConnectionString("DB_To_Query_Connection")))
                     {
-                        userList = connection.Query(request.query);
+                        if (request.role != Statics.AdminRole && request.query.ToLower().Contains("select") == false)
+                        {
+                            throw new Exception("You can't execute any other query other than SELECT");
+                        }
+                        else
+                        {
+                            userList = connection.Query(request.query);
+                        }
                     }
                 }
                 catch (Exception exception)

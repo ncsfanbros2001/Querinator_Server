@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
+using System.Data;
 
 namespace JWT_Demo.Controllers
 {
@@ -117,9 +118,8 @@ namespace JWT_Demo.Controllers
         }
 
 
-        [HttpGet("lockAndUnlock")]
-        // [Authorize(Roles = Statics.AdminRole)]
-        [AllowAnonymous]
+        [HttpGet("lockUnlock/{userId}")]
+        [Authorize(Roles = Statics.AdminRole)]
         public async Task<ActionResult> LockAndUnlockAccount(string userId)
         {
             var userToUpdate = await _userManager.FindByIdAsync(userId);
@@ -135,22 +135,50 @@ namespace JWT_Demo.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Successfully");
+                return Ok();
             }
             else
             {
-                return BadRequest("Failed");
+                return BadRequest();
             }
         }
 
 
         [HttpGet("getUsers")]
-        // [Authorize(Roles = Statics.AdminRole)]
-        [AllowAnonymous]
-        public ActionResult GetAllUsers()
+        [Authorize(Roles = Statics.AdminRole)]
+        public async Task<ActionResult> GetAllUsers()
         {
-            var userList = _userManager.Users;
-            return Ok(userList);
+            return Ok(await _userManager.GetUsersInRoleAsync(Statics.CustomerRole));
+        }
+
+
+        [HttpPut("changePassword")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            var user = await _userManager.FindByIdAsync(changePasswordDTO.Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (changePasswordDTO.NewPassword != changePasswordDTO.ConfirmNewPassword)
+            {
+                return BadRequest("Confirm password must be the same as the new password");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDTO.OldPassword,
+                changePasswordDTO.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok("Password changed successfully");
+            }
+            else
+            {
+                return BadRequest("Password changed failed");
+            }
         }
 
 
