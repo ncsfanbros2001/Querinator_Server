@@ -156,20 +156,25 @@ namespace JWT_Demo.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
-            var user = await _userManager.FindByIdAsync(changePasswordDTO.Id);
+            var user = await _userManager.FindByIdAsync(changePasswordDTO.userId);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            if (changePasswordDTO.NewPassword != changePasswordDTO.ConfirmNewPassword)
+            if (await _userManager.CheckPasswordAsync(user, changePasswordDTO.oldPassword) == false)
+            {
+                return BadRequest("Incorrect old password");
+            }
+
+            if (changePasswordDTO.newPassword != changePasswordDTO.confirmNewPassword)
             {
                 return BadRequest("Confirm password must be the same as the new password");
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, changePasswordDTO.OldPassword,
-                changePasswordDTO.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDTO.oldPassword,
+                changePasswordDTO.newPassword);
 
             if (result.Succeeded)
             {
