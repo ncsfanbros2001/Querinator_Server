@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using JWT_Demo.Data;
+using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
 using Microsoft.Data.SqlClient;
@@ -28,16 +28,14 @@ namespace JWT_Demo.Application
                 object tableNames;
 
                 string retrieveTableQuery = $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
-                    $"WHERE TABLE_TYPE = 'BASE TABLE' " +
-                    $"AND TABLE_CATALOG = 'Bookstore' " +
-                    $"AND TABLE_NAME != '__EFMigrationsHistory'";
+                    $"WHERE TABLE_NAME != '__EFMigrationsHistory'";
 
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        _configuration.GetConnectionString("DB_To_Query_Connection")))
+                        _configuration.GetConnectionString(Statics.QueryDbConnectionName)))
                     {
-                        tableNames = connection.Query(retrieveTableQuery);
+                        tableNames = connection.Query<string>(retrieveTableQuery);
                     }
                 }
                 catch (Exception exception)

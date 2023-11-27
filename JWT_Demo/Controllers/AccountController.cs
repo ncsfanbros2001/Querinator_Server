@@ -19,15 +19,13 @@ namespace JWT_Demo.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly OperatorDbContext _db;
 
         public AccountController(UserManager<AppUser> userManager, TokenService tokenService, 
-            RoleManager<IdentityRole> roleManager, OperatorDbContext db)
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
-            _db = db;
         }
 
 
@@ -93,12 +91,6 @@ namespace JWT_Demo.Controllers
 
             if (result.Succeeded)
             {
-                if (!_roleManager.RoleExistsAsync(Statics.AdminRole).GetAwaiter().GetResult())
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(Statics.AdminRole));
-                    await _roleManager.CreateAsync(new IdentityRole(Statics.CustomerRole));
-                }
-
                 await _userManager.AddToRoleAsync(user, Statics.CustomerRole);
 
                 return CreateUserObject(user);

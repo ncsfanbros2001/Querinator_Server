@@ -1,5 +1,7 @@
 using Data;
 using JWT_Demo.Data;
+using JWT_Demo.HelperMethods;
+using JWT_Demo.SeedDatas;
 using JWT_Demo.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,8 +38,12 @@ try
 {
     var context = services.GetRequiredService<OperatorDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
     await context.Database.MigrateAsync();
-    await SeedData.Seed(context, userManager);
+
+    await SeedRole.Seed(roleManager);
+    await SeedUser.Seed(userManager);
 }
 catch (Exception ex)
 {

@@ -1,12 +1,11 @@
-﻿using JWT_Demo.Data;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Models.Entity;
 
-namespace Data
+namespace JWT_Demo.SeedDatas
 {
-    public class SeedData
+    public class SeedUser
     {
-        public static async Task Seed(OperatorDbContext db, UserManager<AppUser> userManager)
+        public static async Task Seed(UserManager<AppUser> userManager)
         {
             if (!userManager.Users.Any())
             {
@@ -35,6 +34,7 @@ namespace Data
                 foreach (var user in users)
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
+                    await userManager.AddToRoleAsync(user, "admin");
                 }
             }
         }

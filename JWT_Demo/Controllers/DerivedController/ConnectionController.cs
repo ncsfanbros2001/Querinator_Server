@@ -1,5 +1,4 @@
-﻿using JWT_Demo.Application;
-using JWT_Demo.Application.Connection;
+﻿using JWT_Demo.Application.Connection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +10,7 @@ namespace JWT_Demo.Controllers.DerivedController
         [AllowAnonymous]
         public async Task<IActionResult> GetDbConnection()
         {
-            return HandleResult(await Mediator.Send(new GetServerAndDbName.Query { }));
+            return HandleResult(await Mediator.Send(new SetConnectionString.Query { }));
         }
     }
 }

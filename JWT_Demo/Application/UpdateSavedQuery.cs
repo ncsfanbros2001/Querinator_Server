@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dapper;
 using JWT_Demo.Data;
+using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.DTOs;
 using JWT_Demo.Models.Entity;
 using JWT_Demo.Models.Helper;
@@ -54,7 +55,7 @@ namespace JWT_Demo.Application
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        _configuration.GetConnectionString("DB_To_Query_Connection")))
+                        _configuration.GetConnectionString(Statics.QueryDbConnectionName)))
                     {
                         await connection.ExecuteAsync(request.saveQueryDTO.Query);
                     }

@@ -32,7 +32,7 @@ namespace JWT_Demo.Application
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        _configuration.GetConnectionString("DB_To_Query_Connection")))
+                        _configuration.GetConnectionString(Statics.QueryDbConnectionName)))
                     {
                         if (request.role != Statics.AdminRole && request.query.ToLower().Contains("select") == false)
                         {

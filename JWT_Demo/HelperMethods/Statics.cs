@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace JWT_Demo.HelperMethods
 {
@@ -7,23 +8,28 @@ namespace JWT_Demo.HelperMethods
         public const string AdminRole = "admin";
         public const string CustomerRole = "customer";
 
-        public static async Task TimeLimiterForGet(Task task)
+        public const string QueryDbConnectionName = "DB_To_Query_Connection";
+        public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
+
+        public static string DefaultServer()
         {
-            // Start the time measurement
-            var stopwatch = Stopwatch.StartNew();
-
-            // Wait for either the long-running task or 5 seconds
-            var completedTask = await Task.WhenAny(task, Task.Delay(5000));
-
-            // Check if the long-running task completed within 5 seconds
-            if (completedTask != task)
+            string ServerName = Environment.MachineName;
+            string serverTitle = "";
+            RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
+            using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView))
             {
-                // Throw a custom exception indicating timeout
-                throw new Exception();
+                RegistryKey instanceKey = hklm.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL", false);
+                if (instanceKey != null)
+                {
+                    foreach (var instanceName in instanceKey.GetValueNames())
+                    {
+                        serverTitle = $"{ServerName}\\{instanceName}";
+                        break;
+                    }
+                }
             }
 
-            // Stop the timer
-            stopwatch.Stop();
+            return serverTitle;
         }
     }
 }
