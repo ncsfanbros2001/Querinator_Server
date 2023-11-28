@@ -11,10 +11,11 @@ namespace JWT_Demo.HelperMethods
         public const string QueryDbConnectionName = "DB_To_Query_Connection";
         public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
 
-        public static string DefaultServer()
+        public static List<string> DefaultServer()
         {
+            List<string> servers = new List<string>();
+
             string serverName = Dns.GetHostName();
-            string serverTitle = serverName;
             RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
             using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView))
             {
@@ -23,13 +24,12 @@ namespace JWT_Demo.HelperMethods
                 {
                     foreach (var instanceName in instanceKey.GetValueNames())
                     {
-                        serverTitle = $"{serverName}\\{instanceName}";
-                        break;
+                        servers.Add($"{serverName}\\{instanceName}");
                     }
                 }
             }
 
-            return serverTitle;
+            return servers;
         }
     }
 }

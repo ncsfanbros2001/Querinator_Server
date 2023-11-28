@@ -22,7 +22,7 @@ namespace JWT_Demo.Services
             services.AddSwaggerGen();
 
             Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName, 
-                $"Server={Statics.DefaultServer()};" +
+                $"Server={Statics.DefaultServer().First()};" +
                 $"Database=Querinator;" +
                 $"Trusted_Connection=True;" +
                 $"TrustServerCertificate=True;" +

@@ -21,13 +21,6 @@ namespace JWT_Demo.Controllers.DerivedController
             return HandleResult(await Mediator.Send(new GetAllTableName.Query { }));
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult> GetAllSavedQueries()
-        {
-            return HandleResult(await Mediator.Send(new GetAllSavedQueries.Query {}));
-        }
-
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetOneSavedQuery(Guid id)
