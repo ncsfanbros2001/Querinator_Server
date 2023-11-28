@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using System.Diagnostics;
+using System.Net;
 
 namespace JWT_Demo.HelperMethods
 {
@@ -13,8 +13,8 @@ namespace JWT_Demo.HelperMethods
 
         public static string DefaultServer()
         {
-            string ServerName = Environment.MachineName;
-            string serverTitle = "";
+            string serverName = Dns.GetHostName();
+            string serverTitle = serverName;
             RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
             using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView))
             {
@@ -23,7 +23,7 @@ namespace JWT_Demo.HelperMethods
                 {
                     foreach (var instanceName in instanceKey.GetValueNames())
                     {
-                        serverTitle = $"{ServerName}\\{instanceName}";
+                        serverTitle = $"{serverName}\\{instanceName}";
                         break;
                     }
                 }

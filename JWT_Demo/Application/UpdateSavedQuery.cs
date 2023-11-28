@@ -55,9 +55,9 @@ namespace JWT_Demo.Application
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        _configuration.GetConnectionString(Statics.QueryDbConnectionName)))
+                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
                     {
-                        await connection.ExecuteAsync(request.saveQueryDTO.Query);
+                        await connection.QueryAsync(request.saveQueryDTO.Query);
                     }
                 }
                 catch

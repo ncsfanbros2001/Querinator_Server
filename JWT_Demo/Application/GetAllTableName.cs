@@ -17,12 +17,6 @@ namespace JWT_Demo.Application
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
-            private IConfiguration _configuration;
-            public Handler(IConfiguration configuration)
-            {
-                _configuration = configuration;
-            } 
-
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
                 object tableNames;
@@ -33,9 +27,9 @@ namespace JWT_Demo.Application
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        _configuration.GetConnectionString(Statics.QueryDbConnectionName)))
+                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
                     {
-                        tableNames = connection.Query<string>(retrieveTableQuery);
+                        tableNames = await connection.QueryAsync<string>(retrieveTableQuery);
                     }
                 }
                 catch (Exception exception)

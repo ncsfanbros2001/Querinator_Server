@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using JWT_Demo.Data;
-using JWT_Demo.HelperMethods;
+﻿using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
-using System.Data;
 
 namespace JWT_Demo.Controllers
 {

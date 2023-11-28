@@ -4,6 +4,7 @@ using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace JWT_Demo.Services
 {
@@ -20,8 +21,13 @@ namespace JWT_Demo.Services
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName, $"Server={Statics.DefaultServer()};Database=Querinator;" +
-                $"Trusted_Connection=True;TrustServerCertificate=True");
+            Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName, 
+                $"Server={Statics.DefaultServer()};" +
+                $"Database=Querinator;" +
+                $"Trusted_Connection=True;" +
+                $"TrustServerCertificate=True;" +
+                $"User id=;" +
+                $"Password=");
 
             services.AddDbContext<OperatorDbContext>(options =>
             {
@@ -30,7 +36,7 @@ namespace JWT_Demo.Services
 
             services.AddDbContext<QueryDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString(Statics.QueryDbConnectionName));
+                options.UseSqlServer(Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName));
             });
 
             services.AddCors();

@@ -13,14 +13,9 @@ namespace JWT_Demo.Application.Connection
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
-            public Handler()
-            {
-                
-            }
-
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var dbConnection = Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName);
+                string dbConnection = Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName);
                 return API_Response.Success(dbConnection);
             }
         }

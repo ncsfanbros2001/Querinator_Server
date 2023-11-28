@@ -9,22 +9,21 @@ namespace JWT_Demo.Application.Connection
     {
         public class Query : IRequest<API_Response>
         {
-
+            public string serverName { get; set; }
+            public string databaseName { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
-            private readonly IConfiguration _configuration;
-            public Handler(IConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
-
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName, 
-                    $"Server={Statics.DefaultServer()};Database=Querinator;" +
-                    $"Trusted_Connection=True;TrustServerCertificate=True");
+                Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
+                    $"Server={request.serverName};" +
+                    $"Database={request.databaseName};" +
+                    $"Trusted_Connection=True;" +
+                    $"TrustServerCertificate=True;" +
+                    $"User id=;" +
+                    $"Password=");
 
                 return API_Response.Success(null);
             }
