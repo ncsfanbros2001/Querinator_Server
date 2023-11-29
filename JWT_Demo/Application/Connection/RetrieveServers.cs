@@ -1,10 +1,11 @@
 ﻿using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
+using Models.DTOs;
 
 namespace JWT_Demo.Application.Connection
 {
-    public class RetrieveServerAndDatabase
+    public class RetrieveServers
     {
         public class Query : IRequest<API_Response>
         {
@@ -15,8 +16,7 @@ namespace JWT_Demo.Application.Connection
         {
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                string dbConnection = Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName);
-                return API_Response.Success(dbConnection);
+                return API_Response.Success(Statics.DefaultServer());
             }
         }
     }

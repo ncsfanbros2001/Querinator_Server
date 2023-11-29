@@ -1,8 +1,9 @@
 ﻿using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
-using Microsoft.Win32;
+using Microsoft.Data.SqlClient;
 using Models.DTOs;
+using System.Net;
 
 namespace JWT_Demo.Application.Connection
 {
@@ -17,15 +18,23 @@ namespace JWT_Demo.Application.Connection
         {
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
-                    $"Server={request.connectionDTO.serverName};" +
-                    $"Database={request.connectionDTO.databaseName};" +
-                    $"Trusted_Connection=True;" +
-                    $"TrustServerCertificate=True;" +
-                    $"User id={request.connectionDTO.username};" +
-                    $"Password={request.connectionDTO.password}");
+                string conn = Statics.ConnectionString(request.connectionDTO.serverName, request.connectionDTO.databaseName,
+                    request.connectionDTO.username, request.connectionDTO.password);
 
-                return API_Response.Success(null);
+                using (SqlConnection connection = new SqlConnection(conn))
+                {
+                    try
+                    {
+                        connection.Open();
+                        Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName, conn);
+                        
+                        return API_Response.Success(null);
+                    }
+                    catch (Exception ex)
+                    {
+                        return API_Response.Failure(ex.Message, HttpStatusCode.BadRequest);
+                    }
+                }
             }
         }
     }

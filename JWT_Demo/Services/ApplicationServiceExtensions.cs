@@ -21,13 +21,11 @@ namespace JWT_Demo.Services
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName, 
-                $"Server={Statics.DefaultServer().First()};" +
-                $"Database=Querinator;" +
-                $"Trusted_Connection=True;" +
-                $"TrustServerCertificate=True;" +
-                $"User id=;" +
-                $"Password=");
+            Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName,
+                Statics.ConnectionString(Statics.DefaultServer().First(), "Querinator", "", ""));
+
+            Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
+                Statics.ConnectionString(Statics.DefaultServer().First(), Statics.DefaultDatabases().First(), "", ""));
 
             services.AddDbContext<OperatorDbContext>(options =>
             {

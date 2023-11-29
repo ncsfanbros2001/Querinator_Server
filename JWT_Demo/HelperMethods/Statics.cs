@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using Azure.Core;
+using Dapper;
+using JWT_Demo.Models.Helper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Win32;
 using System.Net;
 
 namespace JWT_Demo.HelperMethods
@@ -30,6 +34,43 @@ namespace JWT_Demo.HelperMethods
             }
 
             return servers;
+        }
+
+        public static List<string> DefaultDatabases() 
+        {
+            List<string> databases = new List<string>();
+            // object dbs;
+
+            string retrieveDbQuery = $"SELECT name FROM sys.databases Where name != 'Querinator';";
+
+            string dbName;
+
+            if (Environment.GetEnvironmentVariable(QueryDbConnectionName) == null)
+            {
+                dbName = OperatorDbConnectionName;
+            }
+            else
+            {
+                dbName = QueryDbConnectionName;
+            }
+
+            using (var connection = new SqlConnection(
+                    Environment.GetEnvironmentVariable(dbName)))
+            {
+                databases = (List<string>)connection.Query<string>(retrieveDbQuery);
+            }
+
+            return databases;
+        }
+
+        public static string ConnectionString(string serverName, string databaseName, string username, string password)
+        {
+            return $"Server={serverName};" +
+                $"Database={databaseName};" +
+                $"Trusted_Connection=True;" +
+                $"TrustServerCertificate=True;" +
+                $"User id={username};" +
+                $"Password={password}";
         }
     }
 }

@@ -4,19 +4,18 @@ using MediatR;
 
 namespace JWT_Demo.Application.Connection
 {
-    public class RetrieveConnectionString
+    public class RetrieveDatabases
     {
         public class Query : IRequest<API_Response>
         {
-
+            
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                string dbConnection = Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName);
-                return API_Response.Success(dbConnection);
+                return API_Response.Success(Statics.DefaultDatabases());
             }
         }
     }
