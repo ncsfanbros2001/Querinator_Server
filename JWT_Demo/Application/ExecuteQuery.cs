@@ -4,6 +4,8 @@ using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
 using Microsoft.Data.SqlClient;
+using Models.DTOs;
+using Models.Entity;
 using System.Net;
 
 namespace JWT_Demo.Application
@@ -12,17 +14,16 @@ namespace JWT_Demo.Application
     {
         public class Query : IRequest<API_Response>
         {
-            public string query { get; set; }
-            public string role { get; set; }
+            public QueryHistoryDTO historyDTO {  get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
-            private IConfiguration _configuration;
+            private readonly OperatorDbContext _db;
 
-            public Handler(IConfiguration configuration)
+            public Handler(OperatorDbContext db)
             {
-                _configuration = configuration;
+                _db = db;
             }
 
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
@@ -34,13 +35,37 @@ namespace JWT_Demo.Application
                     await using (var connection = new SqlConnection(
                         Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
                     {
-                        if (request.role != Statics.AdminRole && request.query.ToLower().Contains("select") == false)
+                        if (request.historyDTO.role != Statics.AdminRole &&
+                            request.historyDTO.query.ToLower().Contains("select") == false)
                         {
                             throw new Exception("You can't execute any other query other than SELECT");
                         }
                         else
                         {
-                            userList = connection.Query(request.query);
+                            
+                            userList = connection.Query(request.historyDTO.query);
+
+                            History historyToSave = new()
+                            {
+                                Id = new Guid(),
+                                Query = request.historyDTO.query,
+                                ExecutedTime = DateTime.Now,
+                                UserId = request.historyDTO.userId
+                            };
+
+                            if (_db.Histories.ToList().Count() > 0)
+                            {
+                                var oldestQuery = _db.Histories.Where(x => x.UserId == request.historyDTO.userId)
+                                    .OrderBy(x => x.ExecutedTime).First();
+
+                                if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
+                                {
+                                    _db.Histories.Remove(oldestQuery);
+                                }
+                            }
+
+                            _db.Histories.Add(historyToSave);
+                            await _db.SaveChangesAsync();
                         }
                     }
                 }

@@ -11,6 +11,8 @@ namespace JWT_Demo.Data
         {
             
         }
+
         public DbSet<QueryToSave> SavedQuery { get; set; }
+        public DbSet<History> Histories { get; set; }
     }
 }

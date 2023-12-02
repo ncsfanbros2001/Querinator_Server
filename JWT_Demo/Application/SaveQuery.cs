@@ -23,13 +23,11 @@ namespace JWT_Demo.Application
         public class Handler : IRequestHandler<Command, API_Response>
         {
             private readonly OperatorDbContext _db;
-            private readonly IConfiguration _configuration;
             private readonly UserManager<AppUser> _userManager;
 
-            public Handler(OperatorDbContext db, IConfiguration configuration, UserManager<AppUser> userManager)
+            public Handler(OperatorDbContext db, UserManager<AppUser> userManager)
             {
                 _db = db;
-                _configuration = configuration;
                 _userManager = userManager;
             }
 

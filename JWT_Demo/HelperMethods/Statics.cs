@@ -15,6 +15,9 @@ namespace JWT_Demo.HelperMethods
         public const string QueryDbConnectionName = "DB_To_Query_Connection";
         public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
 
+        public static string CurrentServer = "";
+        public static string CurrentDatabase = "";
+
         public static List<string> DefaultServer()
         {
             List<string> servers = new List<string>();
@@ -39,7 +42,6 @@ namespace JWT_Demo.HelperMethods
         public static List<string> DefaultDatabases() 
         {
             List<string> databases = new List<string>();
-            // object dbs;
 
             string retrieveDbQuery = $"SELECT name FROM sys.databases Where name != 'Querinator';";
 
