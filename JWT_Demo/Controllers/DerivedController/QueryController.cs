@@ -15,7 +15,7 @@ namespace JWT_Demo.Controllers.DerivedController
             return HandleResult(await Mediator.Send(new ExecuteQuery.Query { historyDTO = historyDTO }));
         }
 
-        [HttpGet("history")]
+        [HttpGet("history/{userId}")]
         [Authorize]
         public async Task<IActionResult> GetQueryHistory(string userId)
         {

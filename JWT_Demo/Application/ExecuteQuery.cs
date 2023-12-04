@@ -4,6 +4,7 @@ using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
 using System.Net;
@@ -55,8 +56,8 @@ namespace JWT_Demo.Application
 
                             if (_db.Histories.ToList().Count() > 0)
                             {
-                                var oldestQuery = _db.Histories.Where(x => x.UserId == request.historyDTO.userId)
-                                    .OrderBy(x => x.ExecutedTime).First();
+                                var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
+                                    .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
 
                                 if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
                                 {
@@ -65,7 +66,16 @@ namespace JWT_Demo.Application
                             }
 
                             _db.Histories.Add(historyToSave);
-                            await _db.SaveChangesAsync();
+                            int result = await _db.SaveChangesAsync();
+
+                            if (result == 0)
+                            {
+                                throw new Exception();
+                            }
+                            else
+                            {
+                                return API_Response.Success(userList);
+                            }
                         }
                     }
                 }
@@ -73,8 +83,6 @@ namespace JWT_Demo.Application
                 {
                     return API_Response.Failure(exception.Message, HttpStatusCode.BadRequest);
                 }
-
-                return API_Response.Success(userList);
             }
         }
     }
