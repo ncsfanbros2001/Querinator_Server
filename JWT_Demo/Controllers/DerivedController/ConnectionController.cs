@@ -8,21 +8,21 @@ namespace JWT_Demo.Controllers.DerivedController
     public class ConnectionController : BaseController
     {
         [HttpPost("setConnection")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> SetDbConnection([FromBody]SetConnectionDTO connectionDTO)
         {
             return HandleResult(await Mediator.Send(new SetConnectionString.Query { connectionDTO = connectionDTO }));
         }
 
         [HttpGet("servers")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> RetrieveServers()
         {
             return HandleResult(await Mediator.Send(new RetrieveServers.Query { }));
         }
 
         [HttpGet("databases")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> RetrieveDatabases()
         {
             return HandleResult(await Mediator.Send(new RetrieveDatabases.Query { }));

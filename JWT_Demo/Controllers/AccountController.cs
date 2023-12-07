@@ -141,7 +141,7 @@ namespace JWT_Demo.Controllers
 
 
         [HttpPut("changePassword")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
             var user = await _userManager.FindByIdAsync(changePasswordDTO.userId);

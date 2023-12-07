@@ -1,7 +1,6 @@
 ﻿using JWT_Demo.HelperMethods;
 using JWT_Demo.Models.Helper;
 using MediatR;
-using Models.DTOs;
 
 namespace JWT_Demo.Application.Connection
 {

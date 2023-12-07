@@ -24,13 +24,11 @@ namespace JWT_Demo.Application
         {
             private readonly OperatorDbContext _db;
             private readonly IMapper _mapper;
-            private readonly IConfiguration _configuration;
 
-            public Handler(OperatorDbContext db, IMapper mapper, IConfiguration configuration)
+            public Handler(OperatorDbContext db, IMapper mapper)
             {
                 _db = db;
                 _mapper = mapper;
-                _configuration = configuration;
 
             }
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)

@@ -28,7 +28,12 @@ namespace JWT_Demo.Application.Connection
                         connection.Open();
                         Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName, conn);
 
-                        return API_Response.Success(null);
+                        SetConnectionDTO connectionInfo = new()
+                        {
+                            serverName = request.connectionDTO.serverName,
+                            databaseName = request.connectionDTO.databaseName
+                        };
+                        return API_Response.Success(connectionInfo);
                     }
                     catch (Exception ex)
                     {
