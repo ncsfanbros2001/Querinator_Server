@@ -14,14 +14,11 @@ namespace JWT_Demo.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, 
-            RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
-            _roleManager = roleManager;
         }
 
 
@@ -46,6 +43,9 @@ namespace JWT_Demo.Controllers
                 }
                 else
                 {
+                    Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
+                        Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), Statics.DefaultDatabases().First()));
+
                     return CreateUserObject(user);
                 }
             }

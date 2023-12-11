@@ -22,10 +22,10 @@ namespace JWT_Demo.Services
             services.AddSwaggerGen();
 
             Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName,
-                Statics.ConnectionString(Statics.DefaultServer().First(), "Querinator", "", ""));
+                Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), "Querinator"));
 
             Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
-                Statics.ConnectionString(Statics.DefaultServer().First(), Statics.DefaultDatabases().First(), "", ""));
+                Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), Statics.DefaultDatabases().First()));
 
             services.AddDbContext<OperatorDbContext>(options =>
             {

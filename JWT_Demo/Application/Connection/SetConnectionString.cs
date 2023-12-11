@@ -18,8 +18,21 @@ namespace JWT_Demo.Application.Connection
         {
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                string conn = Statics.ConnectionString(request.connectionDTO.serverName, request.connectionDTO.databaseName,
-                    request.connectionDTO.username, request.connectionDTO.password);
+                string conn;
+                if (request.connectionDTO.requiresCredentials == false)
+                {
+                    conn = Statics.WindowsAuthenticationCS(
+                        request.connectionDTO.serverName,
+                        request.connectionDTO.databaseName);
+                }
+                else
+                {
+                    conn = Statics.SqlServerCS(
+                        request.connectionDTO.serverName, 
+                        request.connectionDTO.databaseName,
+                        request.connectionDTO.username,
+                        request.connectionDTO.password);
+                }
 
                 using (SqlConnection connection = new SqlConnection(conn))
                 {

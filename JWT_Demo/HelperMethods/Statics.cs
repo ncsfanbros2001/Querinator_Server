@@ -65,14 +65,15 @@ namespace JWT_Demo.HelperMethods
             return databases;
         }
 
-        public static string ConnectionString(string serverName, string databaseName, string username, string password)
+        public static string WindowsAuthenticationCS(string serverName, string databaseName)
         {
-            return $"Server={serverName};" +
-                $"Database={databaseName};" +
-                $"Trusted_Connection=True;" +
-                $"TrustServerCertificate=True;" +
-                $"User id={username};" +
-                $"Password={password}";
+            return $"Server={serverName};Database={databaseName};Trusted_Connection=True;TrustServerCertificate=True";
+        }
+
+        public static string SqlServerCS(string serverName, string databaseName, string username, string password)
+        {
+            return $"Server={serverName};Database={databaseName};User ID={username};Password={password};" +
+                $"TrustServerCertificate=True";
         }
     }
 }
