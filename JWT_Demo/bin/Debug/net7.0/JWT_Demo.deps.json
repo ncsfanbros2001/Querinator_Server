@@ -8,17 +8,13 @@
     ".NETCoreApp,Version=v7.0": {
       "JWT_Demo/1.0.0": {
         "dependencies": {
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
-          "Dapper": "2.1.21",
-          "Data": "1.0.0",
-          "MediatR": "12.1.1",
+          "Application": "1.0.0",
+          "MediatR": "12.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.13",
           "Microsoft.AspNetCore.OpenApi": "7.0.13",
-          "Microsoft.EntityFrameworkCore": "7.0.13",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.13",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.13",
           "Microsoft.IdentityModel.Tokens": "7.0.3",
-          "Models": "1.0.0",
           "Swashbuckle.AspNetCore": "6.5.0",
           "System.IdentityModel.Tokens.Jwt": "7.0.3"
         },
@@ -83,11 +79,11 @@
           }
         }
       },
-      "Dapper/2.1.21": {
+      "Dapper/2.1.24": {
         "runtime": {
           "lib/net7.0/Dapper.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.1.21.38011"
+            "fileVersion": "2.1.24.50284"
           }
         }
       },
@@ -99,15 +95,15 @@
           }
         }
       },
-      "MediatR/12.1.1": {
+      "MediatR/12.2.0": {
         "dependencies": {
           "MediatR.Contracts": "2.0.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
         },
         "runtime": {
           "lib/net6.0/MediatR.dll": {
             "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.1.1.0"
+            "fileVersion": "12.2.0.0"
           }
         }
       },
@@ -318,7 +314,7 @@
       "Microsoft.Extensions.Caching.Memory/7.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "7.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
           "Microsoft.Extensions.Options": "7.0.1",
           "Microsoft.Extensions.Primitives": "7.0.0"
@@ -331,10 +327,17 @@
       },
       "Microsoft.Extensions.DependencyInjection/7.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {},
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+        "runtime": {
+          "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyModel/7.0.0": {
         "dependencies": {
           "System.Text.Encodings.Web": "7.0.0",
@@ -376,7 +379,7 @@
       "Microsoft.Extensions.Logging/7.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "7.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
           "Microsoft.Extensions.Options": "7.0.1"
         }
@@ -384,7 +387,7 @@
       "Microsoft.Extensions.Logging.Abstractions/7.0.0": {},
       "Microsoft.Extensions.Options/7.0.1": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Primitives": "7.0.0"
         },
         "runtime": {
@@ -727,6 +730,19 @@
           }
         }
       },
+      "Application/1.0.0": {
+        "dependencies": {
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "Dapper": "2.1.24",
+          "Data": "1.0.0",
+          "MediatR": "12.2.0",
+          "Microsoft.Data.SqlClient": "5.1.1",
+          "Models": "1.0.0"
+        },
+        "runtime": {
+          "Application.dll": {}
+        }
+      },
       "Data/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.13",
@@ -780,12 +796,12 @@
       "path": "azure.identity/1.7.0",
       "hashPath": "azure.identity.1.7.0.nupkg.sha512"
     },
-    "Dapper/2.1.21": {
+    "Dapper/2.1.24": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-EaTXNZX60/k9snRsLxFhD2XmoSKubc+VOeL3hBM6/R8j2MT8/81xOc2V8EEhwr8Mu3Sf951PJPxjlXN4FznH0w==",
-      "path": "dapper/2.1.21",
-      "hashPath": "dapper.2.1.21.nupkg.sha512"
+      "sha512": "sha512-/2t2vsdJyZRsk13AsWigZpsuFvEwK+o3v862cEULXoww905gyKhJFSuwmZI/4Ui9COX9ZCFCI09UHyH4wVYl3A==",
+      "path": "dapper/2.1.24",
+      "hashPath": "dapper.2.1.24.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
@@ -794,12 +810,12 @@
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
-    "MediatR/12.1.1": {
+    "MediatR/12.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1AbwzzeS6gn4NdcO6A9LfKS5TXXgAiUQM3J18dREHa7O7TrdCXJ5dNFeRBpzPZY7UWl5Kby+n9pWrPJe3SDiMA==",
-      "path": "mediatr/12.1.1",
-      "hashPath": "mediatr.12.1.1.nupkg.sha512"
+      "sha512": "sha512-8TUFrHapKi6D74PhnSNEguRsH91HNGyP3R4ZQdgDorJgl9Wac5Prh0vA33QfrniAaS6L2xNNhc6vxzg+5AIbwA==",
+      "path": "mediatr/12.2.0",
+      "hashPath": "mediatr.12.2.0.nupkg.sha512"
     },
     "MediatR.Contracts/2.0.1": {
       "type": "package",
@@ -955,12 +971,12 @@
       "path": "microsoft.extensions.dependencyinjection/7.0.0",
       "hashPath": "microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-h3j/QfmFN4S0w4C2A6X7arXij/M/OVw3uQHSOFxnND4DyAzO1F9eMX7Eti7lU/OkSthEE0WzRsfT/Dmx86jzCw==",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/7.0.0",
-      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512"
+      "sha512": "sha512-cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyModel/7.0.0": {
       "type": "package",
@@ -1269,6 +1285,11 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Data/1.0.0": {
       "type": "project",

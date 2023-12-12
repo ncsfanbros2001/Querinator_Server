@@ -1,4 +1,4 @@
-﻿using JWT_Demo.HelperMethods;
+﻿using Application.HelperMethods;
 using Microsoft.AspNetCore.Identity;
 
 namespace JWT_Demo.SeedDatas

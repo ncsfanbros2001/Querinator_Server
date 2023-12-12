@@ -1,10 +1,9 @@
-﻿using JWT_Demo.Application;
-using JWT_Demo.Data;
-using JWT_Demo.HelperMethods;
+﻿using Application.HelperMethods;
+using Application.Query;
+using Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace JWT_Demo.Services
 {
@@ -27,14 +26,10 @@ namespace JWT_Demo.Services
             Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
                 Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), Statics.DefaultDatabases().First()));
 
+
             services.AddDbContext<OperatorDbContext>(options =>
             {
                 options.UseSqlServer(Environment.GetEnvironmentVariable(Statics.OperatorDbConnectionName));
-            });
-
-            services.AddDbContext<QueryDbContext>(options =>
-            {
-                options.UseSqlServer(Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName));
             });
 
             services.AddCors();

@@ -1,4 +1,4 @@
-﻿using JWT_Demo.Application.Connection;
+﻿using Application.Connection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTOs;

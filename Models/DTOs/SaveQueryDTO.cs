@@ -1,4 +1,4 @@
-﻿namespace JWT_Demo.Models.DTOs
+﻿namespace Models.DTOs
 {
     public class SaveQueryDTO
     {

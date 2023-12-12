@@ -1,4 +1,5 @@
-﻿using JWT_Demo.HelperMethods;
+﻿using Application.HelperMethods;
+using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

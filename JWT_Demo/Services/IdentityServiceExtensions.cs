@@ -1,4 +1,4 @@
-﻿using JWT_Demo.Data;
+﻿using Data;
 using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

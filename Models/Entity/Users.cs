@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JWT_Demo.Models.Entity
+namespace Models.Entity
 {
     public class Users
     {

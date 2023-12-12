@@ -75,7 +75,7 @@
           }
         }
       },
-      "Dapper/2.1.21": {
+      "Dapper/2.1.24": {
         "type": "package",
         "compile": {
           "lib/net7.0/Dapper.dll": {
@@ -101,11 +101,11 @@
           }
         }
       },
-      "MediatR/12.1.1": {
+      "MediatR/12.2.0": {
         "type": "package",
         "dependencies": {
           "MediatR.Contracts": "[2.0.1, 3.0.0)",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
         },
         "compile": {
           "lib/net6.0/MediatR.dll": {
@@ -498,7 +498,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
         "type": "package",
         "compile": {
           "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -1286,6 +1286,24 @@
           }
         }
       },
+      "Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "Dapper": "2.1.24",
+          "Data": "1.0.0",
+          "MediatR": "12.2.0",
+          "Microsoft.Data.SqlClient": "5.1.1",
+          "Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Application.dll": {}
+        }
+      },
       "Data/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -1383,15 +1401,15 @@
         "lib/netstandard2.0/Azure.Identity.xml"
       ]
     },
-    "Dapper/2.1.21": {
-      "sha512": "EaTXNZX60/k9snRsLxFhD2XmoSKubc+VOeL3hBM6/R8j2MT8/81xOc2V8EEhwr8Mu3Sf951PJPxjlXN4FznH0w==",
+    "Dapper/2.1.24": {
+      "sha512": "/2t2vsdJyZRsk13AsWigZpsuFvEwK+o3v862cEULXoww905gyKhJFSuwmZI/4Ui9COX9ZCFCI09UHyH4wVYl3A==",
       "type": "package",
-      "path": "dapper/2.1.21",
+      "path": "dapper/2.1.24",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Dapper.png",
-        "dapper.2.1.21.nupkg.sha512",
+        "dapper.2.1.24.nupkg.sha512",
         "dapper.nuspec",
         "lib/net461/Dapper.dll",
         "lib/net461/Dapper.xml",
@@ -1422,10 +1440,10 @@
         "logo.png"
       ]
     },
-    "MediatR/12.1.1": {
-      "sha512": "1AbwzzeS6gn4NdcO6A9LfKS5TXXgAiUQM3J18dREHa7O7TrdCXJ5dNFeRBpzPZY7UWl5Kby+n9pWrPJe3SDiMA==",
+    "MediatR/12.2.0": {
+      "sha512": "8TUFrHapKi6D74PhnSNEguRsH91HNGyP3R4ZQdgDorJgl9Wac5Prh0vA33QfrniAaS6L2xNNhc6vxzg+5AIbwA==",
       "type": "package",
-      "path": "mediatr/12.1.1",
+      "path": "mediatr/12.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1434,7 +1452,7 @@
         "lib/net6.0/MediatR.xml",
         "lib/netstandard2.0/MediatR.dll",
         "lib/netstandard2.0/MediatR.xml",
-        "mediatr.12.1.1.nupkg.sha512",
+        "mediatr.12.2.0.nupkg.sha512",
         "mediatr.nuspec"
       ]
     },
@@ -2158,15 +2176,16 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
-      "sha512": "h3j/QfmFN4S0w4C2A6X7arXij/M/OVw3uQHSOFxnND4DyAzO1F9eMX7Eti7lU/OkSthEE0WzRsfT/Dmx86jzCw==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+      "sha512": "cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/7.0.0",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
         "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
         "buildTransitive/net462/_._",
@@ -2178,11 +2197,13 @@
         "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3492,6 +3513,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Application/1.0.0": {
+      "type": "project",
+      "path": "../Application/Application.csproj",
+      "msbuildProject": "../Application/Application.csproj"
+    },
     "Data/1.0.0": {
       "type": "project",
       "path": "../Data/Data.csproj",
@@ -3505,17 +3531,13 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
-      "Dapper >= 2.1.21",
-      "Data >= 1.0.0",
-      "MediatR >= 12.1.1",
+      "Application >= 1.0.0",
+      "MediatR >= 12.2.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.13",
       "Microsoft.AspNetCore.OpenApi >= 7.0.13",
-      "Microsoft.EntityFrameworkCore >= 7.0.13",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.13",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.13",
       "Microsoft.IdentityModel.Tokens >= 7.0.3",
-      "Models >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "System.IdentityModel.Tokens.Jwt >= 7.0.3"
     ]
@@ -3547,11 +3569,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj": {
-              "projectPath": "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj"
-            },
-            "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj": {
-              "projectPath": "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj"
+            "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj": {
+              "projectPath": "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj"
             }
           }
         }
@@ -3566,27 +3585,15 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": {
-            "target": "Package",
-            "version": "[12.0.1, )"
-          },
-          "Dapper": {
-            "target": "Package",
-            "version": "[2.1.21, )"
-          },
           "MediatR": {
             "target": "Package",
-            "version": "[12.1.1, )"
+            "version": "[12.2.0, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[7.0.13, )"
           },
           "Microsoft.AspNetCore.OpenApi": {
-            "target": "Package",
-            "version": "[7.0.13, )"
-          },
-          "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[7.0.13, )"
           },

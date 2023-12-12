@@ -255,7 +255,6 @@ H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.GeneratedMSBuildEditor
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.AssemblyInfoInputs.cache
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.AssemblyInfo.cs
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.csproj.CoreCompileInputs.cache
-H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.MvcApplicationPartsAssemblyInfo.cs
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.MvcApplicationPartsAssemblyInfo.cache
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\staticwebassets\msbuild.JWT_Demo.Microsoft.AspNetCore.StaticWebAssets.props
 H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\staticwebassets\msbuild.build.JWT_Demo.props
@@ -279,3 +278,6 @@ H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.E
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Application.dll
+H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Application.pdb

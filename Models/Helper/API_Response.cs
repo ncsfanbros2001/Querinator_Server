@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace JWT_Demo.Models.Helper
+namespace Models.Helper
 {
     public class API_Response
     {

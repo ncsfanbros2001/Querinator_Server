@@ -1,7 +1,6 @@
-﻿using Models.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JWT_Demo.Models.Entity
+namespace Models.Entity
 {
     public class QueryToSave
     {

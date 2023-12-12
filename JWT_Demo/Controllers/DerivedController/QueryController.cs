@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using JWT_Demo.Models.DTOs;
-using JWT_Demo.Application;
 using Microsoft.AspNetCore.Authorization;
 using Models.DTOs;
+using JWT_Demo.Application.Query;
+using Application.Query;
 
 namespace JWT_Demo.Controllers.DerivedController
 {

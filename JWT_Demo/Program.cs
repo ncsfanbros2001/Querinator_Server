@@ -1,4 +1,4 @@
-using JWT_Demo.Data;
+using Data;
 using JWT_Demo.SeedDatas;
 using JWT_Demo.Services;
 using Microsoft.AspNetCore.Identity;

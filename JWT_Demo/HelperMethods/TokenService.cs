@@ -1,4 +1,4 @@
-﻿using JWT_Demo.Data;
+﻿using Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Models.Entity;

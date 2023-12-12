@@ -4,6 +4,86 @@
     "H:\\Querinator\\JWT_Demo\\JWT_Demo\\JWT_Demo.csproj": {}
   },
   "projects": {
+    "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj",
+        "projectName": "Application",
+        "projectPath": "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "H:\\Querinator\\JWT_Demo\\Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj": {
+                "projectPath": "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj"
+              },
+              "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj": {
+                "projectPath": "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.2.0, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -99,11 +179,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj": {
-                "projectPath": "H:\\Querinator\\JWT_Demo\\Data\\Data.csproj"
-              },
-              "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj": {
-                "projectPath": "H:\\Querinator\\JWT_Demo\\Models\\Models.csproj"
+              "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj": {
+                "projectPath": "H:\\Querinator\\JWT_Demo\\Application\\Application.csproj"
               }
             }
           }
@@ -118,27 +195,15 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[12.0.1, )"
-            },
-            "Dapper": {
-              "target": "Package",
-              "version": "[2.1.21, )"
-            },
             "MediatR": {
               "target": "Package",
-              "version": "[12.1.1, )"
+              "version": "[12.2.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[7.0.13, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[7.0.13, )"
-            },
-            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.13, )"
             },

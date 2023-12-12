@@ -1,6 +1,6 @@
-﻿using JWT_Demo.Models.Helper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Models.Helper;
 using System.Net;
 
 namespace JWT_Demo.Controllers
