@@ -36,7 +36,7 @@ namespace JWT_Demo.Application
                 var currentUser = await _userManager.FindByIdAsync(request.queryDTO.UserId);
                 var currentUserRole = await _userManager.IsInRoleAsync(currentUser, Statics.AdminRole);
 
-                if (currentUserRole == false && request.queryDTO.Query.Contains("select") == false)
+                if (currentUserRole == false && request.queryDTO.Query.ToLower().Contains("select") == false)
                 {
                     return API_Response.Failure("You can't save any query other than SELECT",
                         HttpStatusCode.BadRequest);

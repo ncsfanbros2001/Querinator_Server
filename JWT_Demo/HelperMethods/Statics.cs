@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Dapper;
-using JWT_Demo.Models.Helper;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
 using System.Net;

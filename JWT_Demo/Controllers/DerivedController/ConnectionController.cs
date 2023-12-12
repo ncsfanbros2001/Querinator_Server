@@ -27,5 +27,12 @@ namespace JWT_Demo.Controllers.DerivedController
         {
             return HandleResult(await Mediator.Send(new RetrieveDatabases.Query { }));
         }
+
+        [HttpGet("serverAndDb")]
+        [Authorize]
+        public async Task<IActionResult> CurrentServerAndDb()
+        {
+            return HandleResult(await Mediator.Send(new ExtractServerAndDbName.Query { }));
+        }
     }
 }
