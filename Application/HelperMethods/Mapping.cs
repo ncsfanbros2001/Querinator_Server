@@ -10,6 +10,8 @@ namespace Application.HelperMethods
             CreateMap<QueryToSave, QueryToSave>();
 
             CreateMap<AppUser, AppUser>();
+
+            CreateMap<PersonalConnection, PersonalConnection>();
         }
     }
 }

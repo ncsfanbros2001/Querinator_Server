@@ -20,16 +20,11 @@ namespace JWT_Demo.Services
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            Environment.SetEnvironmentVariable(Statics.OperatorDbConnectionName,
-                Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), "Querinator"));
-
-            Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
-                Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), Statics.DefaultDatabases().First()));
-
-
             services.AddDbContext<OperatorDbContext>(options =>
             {
-                options.UseSqlServer(Environment.GetEnvironmentVariable(Statics.OperatorDbConnectionName));
+                options.UseSqlServer(
+                    Statics.WindowsAuthCS(Statics.DefaultServers().First(),
+                    Statics.OperatorDbName));
             });
 
             services.AddCors();

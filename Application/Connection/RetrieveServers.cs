@@ -15,7 +15,7 @@ namespace Application.Connection
         {
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return API_Response.Success(Statics.DefaultServer());
+                return API_Response.Success(Statics.DefaultServers());
             }
         }
     }

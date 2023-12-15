@@ -38,7 +38,7 @@ try
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-    await context.Database.MigrateAsync();
+    // await context.Database.MigrateAsync();
 
     await SeedRole.Seed(roleManager);
     await SeedUser.Seed(userManager);

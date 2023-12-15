@@ -1,4 +1,6 @@
-﻿namespace Models.Entity
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Models.Entity
 {
     public class PersonalConnection
     {
@@ -9,6 +11,8 @@
         public string? username { get; set; }
         public string? password { get; set; }
 
-        public bool requiresCredentials { get; set; }
+        public string belongsTo { get; set; }
+        [ForeignKey("belongsTo")]
+        public AppUser appUser { get; set; }
     }
 }

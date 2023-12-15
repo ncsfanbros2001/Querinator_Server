@@ -281,3 +281,5 @@ H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.Options.dl
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Application.dll
 H:\Querinator\JWT_Demo\JWT_Demo\bin\Debug\net7.0\Application.pdb
+H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.MvcApplicationPartsAssemblyInfo.cs
+H:\Querinator\JWT_Demo\JWT_Demo\obj\Debug\net7.0\JWT_Demo.sourcelink.json

@@ -47,7 +47,7 @@ namespace JWT_Demo.Application.Query
                         HttpStatusCode.BadRequest);
                 }
 
-                QueryToSave? queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
+                QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.queryDTO.Query.ToLower() &&
                     x.UserId.ToLower() == request.queryDTO.UserId.ToLower())!;
 

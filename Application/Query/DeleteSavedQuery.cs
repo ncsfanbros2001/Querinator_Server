@@ -25,7 +25,7 @@ namespace Application.Query
 
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                QueryToSave? queryToDelete = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
+                QueryToSave queryToDelete = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 if (queryToDelete == null)
                 {

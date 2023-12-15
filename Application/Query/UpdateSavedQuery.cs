@@ -33,14 +33,14 @@ namespace JWT_Demo.Application.Query
             }
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                QueryToSave? queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
+                QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
 
                 if (queryToUpdate == null)
                 {
                     return API_Response.Failure("This query doesn't exist", HttpStatusCode.NotFound);
                 }
 
-                QueryToSave? queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
+                QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
                     x.UserId.ToLower() == request.saveQueryDTO.UserId.ToLower() &&
                     x.Title.ToLower() == request.saveQueryDTO.Title.ToLower())!;
@@ -52,11 +52,10 @@ namespace JWT_Demo.Application.Query
 
                 try
                 {
-                    await using (var connection = new SqlConnection(
-                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
-                    {
-                        await connection.QueryAsync(request.saveQueryDTO.Query);
-                    }
+                    await using var connection = new SqlConnection(
+                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName));
+
+                    await connection.QueryAsync(request.saveQueryDTO.Query);
                 }
                 catch
                 {

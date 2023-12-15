@@ -21,3 +21,4 @@ H:\Querinator\JWT_Demo\Models\obj\Debug\net7.0\refint\Models.dll
 H:\Querinator\JWT_Demo\Models\obj\Debug\net7.0\Models.pdb
 H:\Querinator\JWT_Demo\Models\obj\Debug\net7.0\ref\Models.dll
 H:\Querinator\JWT_Demo\Models\obj\Debug\net7.0\Models.csproj.AssemblyReference.cache
+H:\Querinator\JWT_Demo\Models\obj\Debug\net7.0\Models.sourcelink.json

@@ -1,6 +1,6 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
+using System.Data;
 using System.Net;
 
 namespace Application.HelperMethods
@@ -8,17 +8,16 @@ namespace Application.HelperMethods
     public static class Statics
     {
         public const string AdminRole = "admin";
-        public const string CustomerRole = "customer";
+        public const string UserRole = "user";
 
         public const string QueryDbConnectionName = "DB_To_Query_Connection";
         public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
 
-        public static string CurrentServer = "";
-        public static string CurrentDatabase = "";
+        public const string OperatorDbName = "Querinator";
 
-        public static List<string> DefaultServer()
+        public static List<string> DefaultServers()
         {
-            List<string> servers = new List<string>();
+            List<string> servers = new();
 
             string serverName = Dns.GetHostName();
             RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
@@ -39,31 +38,39 @@ namespace Application.HelperMethods
 
         public static List<string> DefaultDatabases() 
         {
-            List<string> databases = new List<string>();
+            List<string> databases = new();
 
-            string retrieveDbQuery = $"SELECT name FROM sys.databases Where name != 'Querinator';";
+            string connectionString = $"Server={DefaultServers().First()};Trusted_Connection=True;" +
+                    $"TrustServerCertificate=True;";
 
-            string dbName;
+            using SqlConnection connection = new(connectionString);
+            connection.Open();
 
-            if (Environment.GetEnvironmentVariable(QueryDbConnectionName) == null)
+            try
             {
-                dbName = OperatorDbConnectionName;
-            }
-            else
-            {
-                dbName = QueryDbConnectionName;
-            }
+                DataTable databasesList = connection.GetSchema("Databases");
 
-            using (var connection = new SqlConnection(
-                    Environment.GetEnvironmentVariable(dbName)))
-            {
-                databases = (List<string>)connection.Query<string>(retrieveDbQuery);
-            }
+                foreach (DataRow database in databasesList.Rows)
+                {
+                    string databaseName = database.Field<string>("database_name");
+                    if (databaseName != OperatorDbName || databaseName != "master" || databaseName != "tempdb"
+                       || databaseName != "model" || databaseName != "msdb")
+                    {
+                        databases.Add(databaseName);
+                    }
+                }
 
-            return databases;
+                connection.Close();
+                return databases;
+            }
+            catch
+            {
+                connection.Close();
+                return new List<string>();
+            }
         }
 
-        public static string WindowsAuthenticationCS(string serverName, string databaseName)
+        public static string WindowsAuthCS(string serverName, string databaseName)
         {
             return $"Server={serverName};Database={databaseName};Trusted_Connection=True;TrustServerCertificate=True";
         }
@@ -71,7 +78,7 @@ namespace Application.HelperMethods
         public static string SqlServerCS(string serverName, string databaseName, string username, string password)
         {
             return $"Server={serverName};Database={databaseName};User ID={username};Password={password};" +
-                $"TrustServerCertificate=True";
+                $"TrustServerCertificate=True;";
         }
     }
 }

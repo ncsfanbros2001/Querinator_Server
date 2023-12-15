@@ -1,4 +1,5 @@
 ﻿using Application.HelperMethods;
+using Data;
 using JWT_Demo.HelperMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +16,13 @@ namespace JWT_Demo.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly OperatorDbContext _db;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, OperatorDbContext db)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _db = db;
         }
 
 
@@ -44,9 +47,6 @@ namespace JWT_Demo.Controllers
                 }
                 else
                 {
-                    Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName,
-                        Statics.WindowsAuthenticationCS(Statics.DefaultServer().First(), Statics.DefaultDatabases().First()));
-
                     return CreateUserObject(user);
                 }
             }
@@ -54,7 +54,6 @@ namespace JWT_Demo.Controllers
             {
                 return BadRequest("Incorrect Username or Password");
             }
-
         }
 
 
@@ -88,7 +87,20 @@ namespace JWT_Demo.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Statics.CustomerRole);
+                await _userManager.AddToRoleAsync(user, Statics.UserRole);
+
+                PersonalConnection personalConnection = new()
+                {
+                    serverName = Statics.DefaultServers().First(),
+                    databaseName = Statics.DefaultDatabases().First(),
+                    username = "",
+                    password = "",
+                    belongsTo = user.Id
+                };
+
+                
+                _db.PersonalConnections.Add(personalConnection);
+                await _db.SaveChangesAsync();
 
                 return CreateUserObject(user);
             }
@@ -137,7 +149,7 @@ namespace JWT_Demo.Controllers
         [Authorize(Roles = Statics.AdminRole)]
         public async Task<ActionResult> GetAllUsers()
         {
-            return Ok(await _userManager.GetUsersInRoleAsync(Statics.CustomerRole));
+            return Ok(await _userManager.GetUsersInRoleAsync(Statics.UserRole));
         }
 
 

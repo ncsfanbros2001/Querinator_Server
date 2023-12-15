@@ -10,7 +10,7 @@ namespace JWT_Demo.SeedDatas
             if (!roleManager.RoleExistsAsync(Statics.AdminRole).GetAwaiter().GetResult())
             {
                 await roleManager.CreateAsync(new IdentityRole(Statics.AdminRole));
-                await roleManager.CreateAsync(new IdentityRole(Statics.CustomerRole));
+                await roleManager.CreateAsync(new IdentityRole(Statics.UserRole));
             }
         }
     }

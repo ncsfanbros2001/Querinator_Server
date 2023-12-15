@@ -1,8 +1,10 @@
-﻿using Application.HelperMethods;
+﻿using Data;
 using MediatR;
-using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
+using Models.Entity;
 using Models.Helper;
+using System.Net;
 
 namespace Application.Connection
 {
@@ -10,20 +12,31 @@ namespace Application.Connection
     {
         public class Query : IRequest<API_Response>
         {
-
+            public string userId { get; set; }    
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
+            private readonly OperatorDbContext _db;
+            public Handler(OperatorDbContext db)
+            {
+                _db = db;
+            }
+
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var connectionString = new SqlConnectionStringBuilder(
-                    Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName));
+                PersonalConnection personalConnectionFromDb = await _db.PersonalConnections.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.belongsTo == request.userId);
 
-                SetConnectionDTO connectionInfo = new()
+                if (personalConnectionFromDb == null)
                 {
-                    serverName = connectionString.DataSource,
-                    databaseName = connectionString.InitialCatalog,
+                    return API_Response.Failure("Can't find your connection string", HttpStatusCode.BadRequest);
+                }
+
+                PersonalConnection connectionInfo = new()
+                {
+                    serverName = personalConnectionFromDb.serverName,
+                    databaseName = personalConnectionFromDb.databaseName
                 };
 
                 return API_Response.Success(connectionInfo);

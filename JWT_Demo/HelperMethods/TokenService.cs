@@ -1,5 +1,4 @@
 ﻿using Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Models.Entity;
 using System.IdentityModel.Tokens.Jwt;

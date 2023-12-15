@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Application.HelperMethods;
+using Microsoft.AspNetCore.Identity;
 using Models.Entity;
 
 namespace JWT_Demo.SeedDatas
@@ -9,34 +10,19 @@ namespace JWT_Demo.SeedDatas
         {
             if (!userManager.Users.Any())
             {
-                var users = new List<AppUser>
+                AppUser user = new()
                 {
-                    new AppUser
-                    {
-                        DisplayName = "Carl Reygard",
-                        UserName = "CarlReygard",
-                        Email = "carl@test.com"
-                    },
-                    new AppUser
-                    {
-                        DisplayName = "Grace Bishop",
-                        UserName = "GraceBishop",
-                        Email = "grace@test.com"
-                    },
-                    new AppUser
-                    {
-                        DisplayName = "Eric Stevens",
-                        UserName = "EricStevens",
-                        Email = "erik@test.com"
-                    }
+                    DisplayName = "System Admin",
+                    UserName = "SYSTEM_ADMIN",
+                    Email = "system@admin.com"
                 };
 
-                foreach (var user in users)
-                {
-                    await userManager.CreateAsync(user, "Pa$$w0rd");
-                    await userManager.AddToRoleAsync(user, "admin");
-                }
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, Statics.AdminRole);
+
+                
             }
+            
         }
     }
 }

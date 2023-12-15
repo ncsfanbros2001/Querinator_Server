@@ -1,7 +1,10 @@
 ﻿using Application.HelperMethods;
+using AutoMapper;
+using Data;
 using MediatR;
 using Microsoft.Data.SqlClient;
-using Models.DTOs;
+using Microsoft.EntityFrameworkCore;
+using Models.Entity;
 using Models.Helper;
 using System.Net;
 
@@ -11,47 +14,73 @@ namespace Application.Connection
     {
         public class Query : IRequest<API_Response>
         {
-            public SetConnectionDTO connectionDTO {  get; set; }
+            public PersonalConnection personalConnection { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
         {
+            private readonly OperatorDbContext _db;
+            private readonly IMapper _mapper;
+
+            public Handler(OperatorDbContext db, IMapper mapper)
+            {
+                _db = db;
+                _mapper = mapper;
+            }
+
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                string conn;
-                if (request.connectionDTO.requiresCredentials == false)
-                {
-                    conn = Statics.WindowsAuthenticationCS(
-                        request.connectionDTO.serverName,
-                        request.connectionDTO.databaseName);
-                }
-                else
-                {
-                    conn = Statics.SqlServerCS(
-                        request.connectionDTO.serverName, 
-                        request.connectionDTO.databaseName,
-                        request.connectionDTO.username,
-                        request.connectionDTO.password);
-                }
+                string conn = Statics.SqlServerCS(
+                        request.personalConnection.serverName,
+                        request.personalConnection.databaseName,
+                        request.personalConnection.username!,
+                        request.personalConnection.password!);
 
-                using (SqlConnection connection = new SqlConnection(conn))
+                using SqlConnection connection = new(conn);
+
+                try
                 {
-                    try
+                    connection.Open();
+
+                    PersonalConnection personalConnectionFromDb = await _db.PersonalConnections
+                        .FirstOrDefaultAsync(x => x.belongsTo == request.personalConnection.belongsTo);
+
+                    if (personalConnectionFromDb == null)
                     {
-                        connection.Open();
-                        Environment.SetEnvironmentVariable(Statics.QueryDbConnectionName, conn);
+                        return API_Response.Failure("Error retrieving connection", HttpStatusCode.BadRequest);
+                    }
 
-                        SetConnectionDTO connectionInfo = new()
+                    PersonalConnection infoToUpdate = new()
+                    {
+                        serverName = request.personalConnection.serverName,
+                        databaseName = request.personalConnection.databaseName,
+                        username = request.personalConnection.username!,
+                        password = request.personalConnection.password!,
+                        belongsTo = request.personalConnection.belongsTo
+                    };
+
+                    _mapper.Map(infoToUpdate, personalConnectionFromDb);
+
+                    var result = await _db.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        PersonalConnection personalConnection = new()
                         {
-                            serverName = request.connectionDTO.serverName,
-                            databaseName = request.connectionDTO.databaseName
+                            serverName = request.personalConnection.serverName,
+                            databaseName = request.personalConnection.databaseName
                         };
-                        return API_Response.Success(connectionInfo);
+
+                        return API_Response.Success(personalConnection);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        return API_Response.Failure(ex.Message, HttpStatusCode.BadRequest);
+                        return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
                     }
+                }
+                catch (Exception ex)
+                {
+                    return API_Response.Failure(ex.Message, HttpStatusCode.BadRequest);
                 }
             }
         }

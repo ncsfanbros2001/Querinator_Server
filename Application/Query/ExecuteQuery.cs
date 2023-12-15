@@ -31,51 +31,46 @@ namespace Application.Query
             {
                 object userList;
 
+                PersonalConnection personalConnection = await _db.PersonalConnections
+                    .FirstOrDefaultAsync(x => x.belongsTo == request.historyDTO.userId);
+
                 try
                 {
                     await using (var connection = new SqlConnection(
-                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
+                        Statics.SqlServerCS(personalConnection.serverName, personalConnection.databaseName,
+                            personalConnection.username, personalConnection.password)))
                     {
-                        if (request.historyDTO.role != Statics.AdminRole &&
-                            request.historyDTO.query.ToLower().Contains("select") == false)
+                        userList = connection.Query(request.historyDTO.query);
+
+                        History historyToSave = new()
                         {
-                            throw new Exception("You can't execute any other query other than SELECT");
+                            Id = new Guid(),
+                            Query = request.historyDTO.query,
+                            ExecutedTime = DateTime.Now,
+                            UserId = request.historyDTO.userId
+                        };
+
+                        if (_db.Histories.ToList().Count() > 0)
+                        {
+                            var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
+                                .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
+
+                            if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
+                            {
+                                _db.Histories.Remove(oldestQuery);
+                            }
+                        }
+
+                        _db.Histories.Add(historyToSave);
+                        int result = await _db.SaveChangesAsync();
+
+                        if (result == 0)
+                        {
+                            throw new Exception();
                         }
                         else
                         {
-
-                            userList = connection.Query(request.historyDTO.query);
-
-                            History historyToSave = new()
-                            {
-                                Id = new Guid(),
-                                Query = request.historyDTO.query,
-                                ExecutedTime = DateTime.Now,
-                                UserId = request.historyDTO.userId
-                            };
-
-                            if (_db.Histories.ToList().Count() > 0)
-                            {
-                                var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
-                                    .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
-
-                                if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
-                                {
-                                    _db.Histories.Remove(oldestQuery);
-                                }
-                            }
-
-                            _db.Histories.Add(historyToSave);
-                            int result = await _db.SaveChangesAsync();
-
-                            if (result == 0)
-                            {
-                                throw new Exception();
-                            }
-                            else
-                            {
-                                return API_Response.Success(userList);
-                            }
+                            return API_Response.Success(userList);
                         }
                     }
                 }

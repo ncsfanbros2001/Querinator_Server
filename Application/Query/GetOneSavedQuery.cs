@@ -25,7 +25,7 @@ namespace JWT_Demo.Application.Query
 
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                QueryToSave? query = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
+                QueryToSave query = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 if (query == null)
                 {
