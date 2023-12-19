@@ -20,11 +20,14 @@ namespace JWT_Demo.Services
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            foreach (var db in Statics.DefaultServers())
+            {
+                Console.WriteLine(db);
+            }
+
             services.AddDbContext<OperatorDbContext>(options =>
             {
-                options.UseSqlServer(
-                    Statics.WindowsAuthCS(Statics.DefaultServers().First(),
-                    Statics.OperatorDbName));
+                options.UseSqlServer(Statics.WindowsAuthCS(Statics.OperatorServerName, Statics.OperatorDbName));
             });
 
             services.AddCors();

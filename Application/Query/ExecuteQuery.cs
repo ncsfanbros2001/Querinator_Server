@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entity;
 using Models.Helper;
+using System;
 using System.Net;
 
 namespace Application.Query
@@ -40,39 +41,49 @@ namespace Application.Query
                         Statics.SqlServerCS(personalConnection.serverName, personalConnection.databaseName,
                             personalConnection.username, personalConnection.password)))
                     {
-                        userList = connection.Query(request.historyDTO.query);
-
-                        History historyToSave = new()
+                        if (request.historyDTO.role != Statics.AdminRole &&
+                            request.historyDTO.query.ToLower().Contains("select") == false)
                         {
-                            Id = new Guid(),
-                            Query = request.historyDTO.query,
-                            ExecutedTime = DateTime.Now,
-                            UserId = request.historyDTO.userId
-                        };
-
-                        if (_db.Histories.ToList().Count() > 0)
-                        {
-                            var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
-                                .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
-
-                            if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
-                            {
-                                _db.Histories.Remove(oldestQuery);
-                            }
-                        }
-
-                        _db.Histories.Add(historyToSave);
-                        int result = await _db.SaveChangesAsync();
-
-                        if (result == 0)
-                        {
-                            throw new Exception();
+                            return API_Response.Failure("You are not allow to query anything other than SELECT",
+                                HttpStatusCode.BadRequest);
                         }
                         else
                         {
-                            return API_Response.Success(userList);
+                            userList = connection.Query(request.historyDTO.query);
+
+                            History historyToSave = new()
+                            {
+                                Id = new Guid(),
+                                Query = request.historyDTO.query,
+                                ExecutedTime = DateTime.Now,
+                                UserId = request.historyDTO.userId
+                            };
+
+                            if (_db.Histories.ToList().Count() > 0)
+                            {
+                                var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
+                                    .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
+
+                                if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
+                                {
+                                    _db.Histories.Remove(oldestQuery);
+                                }
+                            }
+
+                            _db.Histories.Add(historyToSave);
+                            int result = await _db.SaveChangesAsync();
+
+                            if (result == 0)
+                            {
+                                throw new Exception();
+                            }
+                            else
+                            {
+                                return API_Response.Success(userList);
+                            }
                         }
                     }
+                    
                 }
                 catch (Exception exception)
                 {

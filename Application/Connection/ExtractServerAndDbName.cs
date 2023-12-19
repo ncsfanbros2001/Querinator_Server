@@ -1,7 +1,6 @@
 ﻿using Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Models.DTOs;
 using Models.Entity;
 using Models.Helper;
 using System.Net;
@@ -33,13 +32,7 @@ namespace Application.Connection
                     return API_Response.Failure("Can't find your connection string", HttpStatusCode.BadRequest);
                 }
 
-                PersonalConnection connectionInfo = new()
-                {
-                    serverName = personalConnectionFromDb.serverName,
-                    databaseName = personalConnectionFromDb.databaseName
-                };
-
-                return API_Response.Success(connectionInfo);
+                return API_Response.Success(personalConnectionFromDb);
             }
         }
     }

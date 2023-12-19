@@ -50,16 +50,19 @@ namespace JWT_Demo.Application.Query
                     return API_Response.Failure("This query has been saved before", HttpStatusCode.BadRequest);
                 }
 
+                PersonalConnection personalConnection = await _db.PersonalConnections.FirstOrDefaultAsync(
+                    x => x.belongsTo == request.saveQueryDTO.UserId);
+
                 try
                 {
-                    await using var connection = new SqlConnection(
-                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName));
+                    await using var connection = new SqlConnection(Statics.SqlServerCS(personalConnection.serverName,
+                        personalConnection.databaseName, personalConnection.username, personalConnection.password));
 
                     await connection.QueryAsync(request.saveQueryDTO.Query);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return API_Response.Failure("This query is invalid", HttpStatusCode.BadRequest);
+                    return API_Response.Failure(ex.Message, HttpStatusCode.BadRequest);
                 }
 
                 QueryToSave infoToUpdate = new()

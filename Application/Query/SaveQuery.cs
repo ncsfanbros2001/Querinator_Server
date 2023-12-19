@@ -47,26 +47,31 @@ namespace JWT_Demo.Application.Query
                         HttpStatusCode.BadRequest);
                 }
 
+
                 QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.queryDTO.Query.ToLower() &&
-                    x.UserId.ToLower() == request.queryDTO.UserId.ToLower())!;
+                    x.UserId.ToLower() == request.queryDTO.UserId.ToLower() &&
+                    x.Title.ToLower() == request.queryDTO.Title.ToLower())!;
 
                 if (queryFromDb != null)
                 {
                     return API_Response.Failure("This query has been saved before", HttpStatusCode.BadRequest);
                 }
 
+                PersonalConnection personalConnection = await _db.PersonalConnections.FirstOrDefaultAsync(
+                    x => x.belongsTo == request.queryDTO.UserId);
+
                 try
                 {
-                    await using (var connection = new SqlConnection(
-                        Environment.GetEnvironmentVariable(Statics.QueryDbConnectionName)))
+                    await using (var connection = new SqlConnection(Statics.SqlServerCS(personalConnection.serverName, 
+                        personalConnection.databaseName, personalConnection.username, personalConnection.password)))
                     {
                         await connection.QueryAsync(request.queryDTO.Query);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return API_Response.Failure("This query is invalid", HttpStatusCode.BadRequest);
+                    return API_Response.Failure(ex.Message, HttpStatusCode.BadRequest);
                 }
 
                 QueryToSave queryToSave = new()
@@ -74,7 +79,7 @@ namespace JWT_Demo.Application.Query
                     Id = new Guid(),
                     Title = request.queryDTO.Title,
                     Query = request.queryDTO.Query,
-                    UserId = request.queryDTO.UserId,
+                    UserId = request.queryDTO.UserId
                 };
 
                 await _db.SavedQuery.AddAsync(queryToSave);

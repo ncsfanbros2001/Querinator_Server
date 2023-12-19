@@ -22,7 +22,8 @@ namespace JWT_Demo.Application.Query
 
             public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return API_Response.Success(await _db.SavedQuery.Where(x => x.UserId == request.UserId).ToListAsync());
+                return API_Response.Success(await _db.SavedQuery.AsNoTracking()
+                    .Where(x => x.UserId == request.UserId).ToListAsync());
             }
         }
     }

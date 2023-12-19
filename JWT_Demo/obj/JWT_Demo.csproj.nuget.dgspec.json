@@ -221,6 +221,10 @@
               "target": "Package",
               "version": "[7.0.3, )"
             },
+            "Microsoft.SqlServer.SqlManagementObjects": {
+              "target": "Package",
+              "version": "[170.18.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"

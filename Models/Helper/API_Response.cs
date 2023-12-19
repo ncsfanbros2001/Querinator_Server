@@ -10,8 +10,8 @@ namespace Models.Helper
         }
 
         public bool IsSuccess { get; set; }
-        public object Result { get; set; }
-        public List<string> ErrorMessages { get; set; }
+        public object? Result { get; set; }
+        public string? ErrorMessage { get; set; }
         public HttpStatusCode StatusCode { get; set; }
 
         public static API_Response Success(object? result)
@@ -21,7 +21,7 @@ namespace Models.Helper
                 IsSuccess = true,
                 Result = result,
                 StatusCode = HttpStatusCode.OK,
-                ErrorMessages = new List<string>() { }
+                ErrorMessage = null
             };
         }
 
@@ -30,7 +30,7 @@ namespace Models.Helper
             return new API_Response()
             {
                 IsSuccess = false,
-                ErrorMessages = new List<string> { exception },
+                ErrorMessage = exception,
                 StatusCode = statusCode,
                 Result = null
             };

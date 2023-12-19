@@ -13,6 +13,7 @@ namespace Application.HelperMethods
         public const string QueryDbConnectionName = "DB_To_Query_Connection";
         public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
 
+        public const string OperatorServerName = "LAPTOP-NATTQ2BG\\MSSQLSERVER01";
         public const string OperatorDbName = "Querinator";
 
         public static List<string> DefaultServers()
@@ -44,10 +45,10 @@ namespace Application.HelperMethods
                     $"TrustServerCertificate=True;";
 
             using SqlConnection connection = new(connectionString);
-            connection.Open();
 
             try
             {
+                connection.Open();
                 DataTable databasesList = connection.GetSchema("Databases");
 
                 foreach (DataRow database in databasesList.Rows)
