@@ -34,7 +34,7 @@ namespace JWT_Demo.Controllers
 
             if (user == null)
             {
-                return BadRequest("Incorrect Username or Password");
+                return BadRequest("Incorrect Credentials");
             }
 
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
@@ -52,7 +52,7 @@ namespace JWT_Demo.Controllers
             }
             else
             {
-                return BadRequest("Incorrect Username or Password");
+                return BadRequest("Incorrect Credentials");
             }
         }
 
@@ -87,14 +87,14 @@ namespace JWT_Demo.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Statics.UserRole);
+                await _userManager.AddToRoleAsync(user, registerDTO.Role);
 
                 PersonalConnection personalConnection = new()
                 {
-                    serverName = Statics.DefaultServers().First(),
-                    databaseName = Statics.DefaultDatabases().First(),
-                    username = "",
-                    password = "",
+                    serverName = null,
+                    databaseName = null,
+                    username = null,
+                    password = null,
                     belongsTo = user.Id
                 };
 

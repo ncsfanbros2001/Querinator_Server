@@ -183,8 +183,8 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    serverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    databaseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    serverName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    databaseName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     belongsTo = table.Column<string>(type: "nvarchar(450)", nullable: false)

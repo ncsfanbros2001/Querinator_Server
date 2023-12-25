@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(OperatorDbContext))]
-    [Migration("20231218073922_StartFresh")]
+    [Migration("20231219030244_StartFresh")]
     partial class StartFresh
     {
         /// <inheritdoc />
@@ -265,14 +265,12 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("databaseName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("serverName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("username")

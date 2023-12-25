@@ -64,7 +64,8 @@ namespace JWT_Demo.Application.Query
                 try
                 {
                     await using (var connection = new SqlConnection(Statics.SqlServerCS(personalConnection.serverName, 
-                        personalConnection.databaseName, personalConnection.username, personalConnection.password)))
+                        personalConnection.databaseName, personalConnection.username,
+                        Statics.Decrypt(personalConnection.password))))
                     {
                         await connection.QueryAsync(request.queryDTO.Query);
                     }

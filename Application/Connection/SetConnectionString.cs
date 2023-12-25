@@ -12,12 +12,12 @@ namespace Application.Connection
 {
     public class SetConnectionString
     {
-        public class Query : IRequest<API_Response>
+        public class Command : IRequest<API_Response>
         {
             public PersonalConnection personalConnection { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, API_Response>
+        public class Handler : IRequestHandler<Command, API_Response>
         {
             private readonly OperatorDbContext _db;
             private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace Application.Connection
                 _mapper = mapper;
             }
 
-            public async Task<API_Response> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 string conn = Statics.SqlServerCS(
                         request.personalConnection.serverName,
@@ -52,10 +52,11 @@ namespace Application.Connection
 
                     PersonalConnection infoToUpdate = new()
                     {
+                        Id = personalConnectionFromDb.Id,
                         serverName = request.personalConnection.serverName,
                         databaseName = request.personalConnection.databaseName,
                         username = request.personalConnection.username!,
-                        password = request.personalConnection.password!,
+                        password = Statics.Encrypt(request.personalConnection.password!),
                         belongsTo = request.personalConnection.belongsTo
                     };
 

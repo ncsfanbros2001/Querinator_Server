@@ -2,25 +2,28 @@
 using Microsoft.Win32;
 using System.Data;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Application.HelperMethods
 {
-    public static class Statics
+    public class Statics
     {
         public const string AdminRole = "admin";
         public const string UserRole = "user";
 
-        public const string QueryDbConnectionName = "DB_To_Query_Connection";
-        public const string OperatorDbConnectionName = "DB_To_Operate_Connection";
-
         public const string OperatorServerName = "LAPTOP-NATTQ2BG\\MSSQLSERVER01";
         public const string OperatorDbName = "Querinator";
+
+        private const string Key = "7XIh3u9xDudo7xm1";
 
         public static List<string> DefaultServers()
         {
             List<string> servers = new();
 
             string serverName = Dns.GetHostName();
+            servers.Add(serverName);
+
             RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
             using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView))
             {
@@ -37,12 +40,11 @@ namespace Application.HelperMethods
             return servers;
         }
 
-        public static List<string> DefaultDatabases() 
+        public static List<string> DefaultDatabases(string server) 
         {
             List<string> databases = new();
 
-            string connectionString = $"Server={DefaultServers().First()};Trusted_Connection=True;" +
-                    $"TrustServerCertificate=True;";
+            string connectionString = $"Server={server};Trusted_Connection=True;TrustServerCertificate=True;";
 
             using SqlConnection connection = new(connectionString);
 
@@ -54,8 +56,8 @@ namespace Application.HelperMethods
                 foreach (DataRow database in databasesList.Rows)
                 {
                     string databaseName = database.Field<string>("database_name");
-                    if (databaseName != OperatorDbName || databaseName != "master" || databaseName != "tempdb"
-                       || databaseName != "model" || databaseName != "msdb")
+                    if (databaseName != OperatorDbName && databaseName != "master" && databaseName != "tempdb"
+                       && databaseName != "model" && databaseName != "msdb")
                     {
                         databases.Add(databaseName);
                     }
@@ -80,6 +82,52 @@ namespace Application.HelperMethods
         {
             return $"Server={serverName};Database={databaseName};User ID={username};Password={password};" +
                 $"TrustServerCertificate=True;";
+        }
+
+        public static string Encrypt(string text)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Encoding.UTF8.GetBytes(Key);
+                aesAlg.IV = new byte[16];
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(text);
+                        }
+                    }
+
+                    return Convert.ToBase64String(msEncrypt.ToArray());
+                }
+            }
+        }
+
+        public static string Decrypt(string encryptedText)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Encoding.UTF8.GetBytes(Key);
+                aesAlg.IV = new byte[16];
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(encryptedText)))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            return srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+            }
         }
     }
 }

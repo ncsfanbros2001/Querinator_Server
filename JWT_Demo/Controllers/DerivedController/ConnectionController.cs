@@ -11,7 +11,7 @@ namespace JWT_Demo.Controllers.DerivedController
         [Authorize]
         public async Task<IActionResult> SetDbConnection([FromBody]PersonalConnection personalConnection)
         {
-            return HandleResult(await Mediator.Send(new SetConnectionString.Query { personalConnection = personalConnection }));
+            return HandleResult(await Mediator.Send(new SetConnectionString.Command { personalConnection = personalConnection }));
         }
 
         [HttpGet("servers")]
@@ -21,18 +21,18 @@ namespace JWT_Demo.Controllers.DerivedController
             return HandleResult(await Mediator.Send(new RetrieveServers.Query { }));
         }
 
-        [HttpGet("databases")]
+        [HttpGet("databases/{server}")]
         [Authorize]
-        public async Task<IActionResult> RetrieveDatabases()
+        public async Task<IActionResult> RetrieveDatabases(string server)
         {
-            return HandleResult(await Mediator.Send(new RetrieveDatabases.Query { }));
+            return HandleResult(await Mediator.Send(new RetrieveDatabases.Query { server = server }));
         }
 
-        [HttpGet("serverAndDb")]
-        [Authorize]
-        public async Task<IActionResult> CurrentServerAndDb()
+        [HttpGet("serverAndDb/{userId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CurrentServerAndDb(string userId)
         {
-            return HandleResult(await Mediator.Send(new ExtractServerAndDbName.Query { }));
+            return HandleResult(await Mediator.Send(new ExtractServerAndDbName.Query { userId = userId }));
         }
     }
 }
