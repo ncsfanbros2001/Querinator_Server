@@ -7,6 +7,8 @@ namespace Models.Entity
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Query { get; set; }
+        public string Server { get; set; }
+        public string Database { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]

@@ -35,12 +35,6 @@ namespace JWT_Demo.Application.Query
                 var currentUser = await _userManager.FindByIdAsync(request.queryDTO.UserId);
                 var currentUserRole = await _userManager.IsInRoleAsync(currentUser!, Statics.AdminRole);
 
-                if (currentUserRole == false && request.queryDTO.Query.ToLower().Contains("select") == false)
-                {
-                    return API_Response.Failure("You can't save any query other than SELECT",
-                        HttpStatusCode.BadRequest);
-                }
-
                 if (request.queryDTO.Title == "")
                 {
                     return API_Response.Failure("You must enter a title to save this query",
@@ -50,12 +44,11 @@ namespace JWT_Demo.Application.Query
 
                 QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.queryDTO.Query.ToLower() &&
-                    x.UserId.ToLower() == request.queryDTO.UserId.ToLower() &&
-                    x.Title.ToLower() == request.queryDTO.Title.ToLower())!;
+                    x.UserId.ToLower() == request.queryDTO.UserId.ToLower())!;
 
                 if (queryFromDb != null)
                 {
-                    return API_Response.Failure("This query has been saved before", HttpStatusCode.BadRequest);
+                    return API_Response.Failure("This query has already been saved", HttpStatusCode.BadRequest);
                 }
 
                 PersonalConnection personalConnection = await _db.PersonalConnections.FirstOrDefaultAsync(
@@ -80,6 +73,8 @@ namespace JWT_Demo.Application.Query
                     Id = new Guid(),
                     Title = request.queryDTO.Title,
                     Query = request.queryDTO.Query,
+                    Server = personalConnection.serverName,
+                    Database = personalConnection.databaseName,
                     UserId = request.queryDTO.UserId
                 };
 

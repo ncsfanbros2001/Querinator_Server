@@ -3,8 +3,8 @@ namespace Models.DTOs
 {
     public class QueryHistoryDTO
     {
-        public string query { get; set; }
-        public string role { get; set; }
-        public string userId { get; set; }
+        public string Query { get; set; }
+        public string Role { get; set; }
+        public string UserId { get; set; }
     }
 }

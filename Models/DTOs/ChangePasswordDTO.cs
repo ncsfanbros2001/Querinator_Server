@@ -5,16 +5,16 @@ namespace Models.DTOs
     public class ChangePasswordDTO
     {
         [Required]
-        public string userId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
-        public string oldPassword { get; set; }
+        public string OldPassword { get; set; }
 
         [Required]
         [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}$", ErrorMessage = "Password isn't complex enough")]
-        public string newPassword { get; set; }
+        public string NewPassword { get; set; }
 
         [Required]
-        public string confirmNewPassword { get; set; }
+        public string ConfirmNewPassword { get; set; }
     }
 }

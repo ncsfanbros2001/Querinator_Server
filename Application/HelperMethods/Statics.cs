@@ -12,7 +12,7 @@ namespace Application.HelperMethods
         public const string AdminRole = "admin";
         public const string UserRole = "user";
 
-        public const string OperatorServerName = "LAPTOP-NATTQ2BG\\MSSQLSERVER01";
+        public static string OperatorServerName = Dns.GetHostName() + "\\QUERINATOR";
         public const string OperatorDbName = "Querinator";
 
         private const string Key = "7XIh3u9xDudo7xm1";
@@ -32,7 +32,10 @@ namespace Application.HelperMethods
                 {
                     foreach (var instanceName in instanceKey.GetValueNames())
                     {
-                        servers.Add($"{serverName}\\{instanceName}");
+                        if (instanceName != OperatorDbName.ToUpper())
+                        {
+                            servers.Add($"{serverName}\\{instanceName}");
+                        }
                     }
                 }
             }

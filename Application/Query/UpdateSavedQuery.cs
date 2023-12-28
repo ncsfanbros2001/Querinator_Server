@@ -73,6 +73,8 @@ namespace JWT_Demo.Application.Query
                     Id = request.Id,
                     Title = request.saveQueryDTO.Title,
                     Query = request.saveQueryDTO.Query,
+                    Server = personalConnection.serverName,
+                    Database = personalConnection.databaseName,
                     UserId = request.saveQueryDTO.UserId
                 };
 

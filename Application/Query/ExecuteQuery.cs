@@ -32,7 +32,7 @@ namespace Application.Query
                 object userList;
 
                 PersonalConnection personalConnection = await _db.PersonalConnections
-                    .FirstOrDefaultAsync(x => x.belongsTo == request.historyDTO.userId);
+                    .FirstOrDefaultAsync(x => x.belongsTo == request.historyDTO.UserId);
 
                 string dbConnection = Statics.SqlServerCS(personalConnection.serverName, personalConnection.databaseName,
                     personalConnection.username, Statics.Decrypt(personalConnection.password));
@@ -41,22 +41,22 @@ namespace Application.Query
                 {
                     await using (var connection = new SqlConnection(dbConnection))
                     {
-                        userList = connection.Query(request.historyDTO.query);
+                        userList = connection.Query(request.historyDTO.Query);
 
                         History historyToSave = new()
                         {
                             Id = new Guid(),
-                            Query = request.historyDTO.query,
+                            Query = request.historyDTO.Query,
                             ExecutedTime = DateTime.Now,
-                            UserId = request.historyDTO.userId
+                            UserId = request.historyDTO.UserId
                         };
 
                         if (_db.Histories.ToList().Count() > 0)
                         {
                             var oldestQuery = await _db.Histories.OrderBy(x => x.ExecutedTime)
-                                .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.userId);
+                                .FirstOrDefaultAsync(x => x.UserId == request.historyDTO.UserId);
 
-                            if (_db.Histories.Where(x => x.UserId == request.historyDTO.userId).ToList().Count() > 9)
+                            if (_db.Histories.Where(x => x.UserId == request.historyDTO.UserId).ToList().Count() > 9)
                             {
                                 _db.Histories.Remove(oldestQuery);
                             }
