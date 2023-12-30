@@ -17,7 +17,7 @@ namespace JWT_Demo.Application.Query
         public class Command : IRequest<API_Response>
         {
             public Guid Id { get; set; }
-            public SaveQueryDTO saveQueryDTO { get; set; }
+            public UpdateQueryDTO updateQueryDTO { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, API_Response>
@@ -41,9 +41,9 @@ namespace JWT_Demo.Application.Query
                 }
 
                 QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
-                    x => x.Query.ToLower() == request.saveQueryDTO.Query.ToLower() &&
-                    x.UserId.ToLower() == request.saveQueryDTO.UserId.ToLower() &&
-                    x.Title.ToLower() == request.saveQueryDTO.Title.ToLower())!;
+                    x => x.Query.ToLower() == request.updateQueryDTO.Query.ToLower() &&
+                    x.UserId.ToLower() == request.Id.ToString().ToLower() &&
+                    x.Title.ToLower() == request.updateQueryDTO.Title.ToLower())!;
 
                 if (queryFromDb != null)
                 {
@@ -51,7 +51,7 @@ namespace JWT_Demo.Application.Query
                 }
 
                 PersonalConnection personalConnection = await _db.PersonalConnections.FirstOrDefaultAsync(
-                    x => x.belongsTo == request.saveQueryDTO.UserId);
+                    x => x.belongsTo.ToLower() == request.Id.ToString().ToLower());
 
                 try
                 {
@@ -61,7 +61,7 @@ namespace JWT_Demo.Application.Query
 
                     await using var connection = new SqlConnection(connectionString);
 
-                    await connection.QueryAsync(request.saveQueryDTO.Query);
+                    await connection.QueryAsync(request.updateQueryDTO.Query);
                 }
                 catch (Exception ex)
                 {
@@ -70,12 +70,12 @@ namespace JWT_Demo.Application.Query
 
                 QueryToSave infoToUpdate = new()
                 {
-                    Id = request.Id,
-                    Title = request.saveQueryDTO.Title,
-                    Query = request.saveQueryDTO.Query,
+                    Id = queryToUpdate.Id,
+                    Title = request.updateQueryDTO.Title,
+                    Query = request.updateQueryDTO.Query,
                     Server = personalConnection.serverName,
                     Database = personalConnection.databaseName,
-                    UserId = request.saveQueryDTO.UserId
+                    UserId = queryToUpdate.UserId
                 };
 
                 _mapper.Map(infoToUpdate, queryToUpdate);

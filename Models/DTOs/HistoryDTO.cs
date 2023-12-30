@@ -1,10 +1,9 @@
 ﻿
 namespace Models.DTOs
 {
-    public class QueryHistoryDTO
+    public class HistoryDTO
     {
         public string Query { get; set; }
-        public string Role { get; set; }
         public string UserId { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace JWT_Demo.Controllers.DerivedController
     {
         [HttpPost("executeQuery")]
         [Authorize]
-        public async Task<IActionResult> ExecuteQuery([FromBody]QueryHistoryDTO historyDTO)
+        public async Task<IActionResult> ExecuteQuery([FromBody]HistoryDTO historyDTO)
         {
             return HandleResult(await Mediator.Send(new ExecuteQuery.Query { historyDTO = historyDTO }));
         }
@@ -38,16 +38,16 @@ namespace JWT_Demo.Controllers.DerivedController
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> SaveQuery([FromBody] SaveQueryDTO saveQueryDTO)
+        public async Task<ActionResult> SaveQuery([FromBody]SaveQueryDTO saveQueryDTO)
         {
             return HandleResult(await Mediator.Send(new SaveQuery.Command { queryDTO = saveQueryDTO }));
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateSavedQuery(Guid id, [FromBody]SaveQueryDTO query)
+        public async Task<ActionResult> UpdateSavedQuery(Guid id, [FromBody]UpdateQueryDTO updateQueryDTO)
         {
-            return HandleResult(await Mediator.Send(new UpdateSavedQuery.Command { Id = id, saveQueryDTO = query }));
+            return HandleResult(await Mediator.Send(new UpdateSavedQuery.Command { Id = id, updateQueryDTO = updateQueryDTO }));
         }
 
         [HttpDelete("{id}")]

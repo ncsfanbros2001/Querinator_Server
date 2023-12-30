@@ -8,6 +8,9 @@ namespace Models.Entity
         public string Query { get; set; }
         public DateTime ExecutedTime { get; set; }
 
+        public string Server { get; set; }
+        public string Database { get; set; }
+
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public AppUser appUser { get; set; }

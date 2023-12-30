@@ -15,7 +15,7 @@ namespace Application.Query
     {
         public class Query : IRequest<API_Response>
         {
-            public QueryHistoryDTO historyDTO { get; set; }
+            public HistoryDTO historyDTO { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, API_Response>
@@ -48,6 +48,8 @@ namespace Application.Query
                             Id = new Guid(),
                             Query = request.historyDTO.Query,
                             ExecutedTime = DateTime.Now,
+                            Server = personalConnection.serverName,
+                            Database = personalConnection.databaseName,
                             UserId = request.historyDTO.UserId
                         };
 
