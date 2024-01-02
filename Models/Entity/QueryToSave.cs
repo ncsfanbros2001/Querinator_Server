@@ -12,6 +12,6 @@ namespace Models.Entity
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public AppUser appUser { get; set; }
+        public AppUser? appUser { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace Models.Entity
     {
         public string DisplayName { get; set; }
 
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; set; } = false;
     }
 }

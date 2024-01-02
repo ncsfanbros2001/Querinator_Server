@@ -16,7 +16,7 @@ namespace JWT_Demo.Application.Query
     {
         public class Command : IRequest<API_Response>
         {
-            public Guid Id { get; set; }
+            public string UserId { get; set; }
             public UpdateQueryDTO updateQueryDTO { get; set; }
         }
 
@@ -33,7 +33,8 @@ namespace JWT_Demo.Application.Query
             }
             public async Task<API_Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id == request.Id)!;
+                QueryToSave queryToUpdate = await _db.SavedQuery.FirstOrDefaultAsync(x => x.Id.ToString().ToLower() 
+                    == request.updateQueryDTO.QueryId.ToLower())!;
 
                 if (queryToUpdate == null)
                 {
@@ -42,7 +43,7 @@ namespace JWT_Demo.Application.Query
 
                 QueryToSave queryFromDb = await _db.SavedQuery.FirstOrDefaultAsync(
                     x => x.Query.ToLower() == request.updateQueryDTO.Query.ToLower() &&
-                    x.UserId.ToLower() == request.Id.ToString().ToLower() &&
+                    x.UserId.ToLower() == request.UserId.ToString().ToLower() &&
                     x.Title.ToLower() == request.updateQueryDTO.Title.ToLower())!;
 
                 if (queryFromDb != null)
@@ -51,7 +52,7 @@ namespace JWT_Demo.Application.Query
                 }
 
                 PersonalConnection personalConnection = await _db.PersonalConnections.FirstOrDefaultAsync(
-                    x => x.belongsTo.ToLower() == request.Id.ToString().ToLower());
+                    x => x.belongsTo.ToLower() == request.UserId.ToString().ToLower());
 
                 try
                 {

@@ -1,6 +1,7 @@
 ﻿using Application.Connection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.DTOs;
 using Models.Entity;
 
 namespace JWT_Demo.Controllers.DerivedController
@@ -9,9 +10,9 @@ namespace JWT_Demo.Controllers.DerivedController
     {
         [HttpPost("setConnection")]
         [Authorize]
-        public async Task<IActionResult> SetDbConnection([FromBody]PersonalConnection personalConnection)
+        public async Task<IActionResult> SetDbConnection([FromBody]SetConnectionDTO setConnectionDTO)
         {
-            return HandleResult(await Mediator.Send(new SetConnectionString.Command { personalConnection = personalConnection }));
+            return HandleResult(await Mediator.Send(new SetConnectionString.Command { setConnectionDTO = setConnectionDTO }));
         }
 
         [HttpGet("servers")]

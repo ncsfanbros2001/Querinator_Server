@@ -43,11 +43,12 @@ namespace JWT_Demo.Controllers.DerivedController
             return HandleResult(await Mediator.Send(new SaveQuery.Command { queryDTO = saveQueryDTO }));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{userId}")]
         [Authorize]
-        public async Task<ActionResult> UpdateSavedQuery(Guid id, [FromBody]UpdateQueryDTO updateQueryDTO)
+        public async Task<ActionResult> UpdateSavedQuery(string userId, [FromBody]UpdateQueryDTO updateQueryDTO)
         {
-            return HandleResult(await Mediator.Send(new UpdateSavedQuery.Command { Id = id, updateQueryDTO = updateQueryDTO }));
+            return HandleResult(await Mediator.Send(new UpdateSavedQuery.Command { UserId = userId,
+                updateQueryDTO = updateQueryDTO }));
         }
 
         [HttpDelete("{id}")]
