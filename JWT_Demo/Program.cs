@@ -2,6 +2,7 @@ using Data;
 using JWT_Demo.SeedDatas;
 using JWT_Demo.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Models.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,8 @@ try
     var context = services.GetRequiredService<OperatorDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await context.Database.MigrateAsync();
 
     await SeedRole.Seed(roleManager);
     await SeedUser.Seed(userManager, context);
