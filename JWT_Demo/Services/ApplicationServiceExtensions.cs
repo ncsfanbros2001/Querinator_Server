@@ -22,7 +22,7 @@ namespace JWT_Demo.Services
 
             services.AddDbContext<OperatorDbContext>(options =>
             {
-                options.UseSqlServer(Statics.WindowsAuthCS(Statics.OperatorServerName, Statics.OperatorDbName));
+                options.UseSqlServer(Statics.SqlServerCS(Statics.OperatorServerName, Statics.OperatorDbName, "sa", "12345"));
             });
 
             services.AddCors();

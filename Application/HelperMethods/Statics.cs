@@ -48,7 +48,7 @@ namespace Application.HelperMethods
         {
             List<string> databases = new();
 
-            string connectionString = $"Server={server};Trusted_Connection=True;TrustServerCertificate=True;";
+            string connectionString = $"Server={server};User ID=sa;Password=12345;TrustServerCertificate=True;";
 
             using SqlConnection connection = new(connectionString);
 
@@ -77,10 +77,10 @@ namespace Application.HelperMethods
             }
         }
 
-        public static string WindowsAuthCS(string serverName, string databaseName)
-        {
-            return $"Server={serverName};Database={databaseName};Trusted_Connection=True;TrustServerCertificate=True";
-        }
+        //public static string WindowsAuthCS(string serverName, string databaseName)
+        //{
+        //    return $"Server={serverName};Database={databaseName};TrustServerCertificate=True";
+        //}
 
         public static string SqlServerCS(string serverName, string databaseName, string username, string password)
         {

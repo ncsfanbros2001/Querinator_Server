@@ -65,20 +65,28 @@ namespace Application.Connection
 
                     var result = await _db.SaveChangesAsync();
 
-                    if (result > 0)
+                    PersonalConnection personalConnection = new()
                     {
-                        PersonalConnection personalConnection = new()
-                        {
-                            serverName = request.setConnectionDTO.serverName,
-                            databaseName = request.setConnectionDTO.databaseName
-                        };
+                        serverName = request.setConnectionDTO.serverName,
+                        databaseName = request.setConnectionDTO.databaseName
+                    };
 
-                        return API_Response.Success(personalConnection);
-                    }
-                    else
-                    {
-                        return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
-                    }
+                    return API_Response.Success(personalConnection);
+
+                    //if (result > 0)
+                    //{
+                    //    PersonalConnection personalConnection = new()
+                    //    {
+                    //        serverName = request.setConnectionDTO.serverName,
+                    //        databaseName = request.setConnectionDTO.databaseName
+                    //    };
+
+                    //    return API_Response.Success(personalConnection);
+                    //}
+                    //else
+                    //{
+                    //    return API_Response.Failure("Please change something to update", HttpStatusCode.BadRequest);
+                    //}
                 }
                 catch (Exception ex)
                 {

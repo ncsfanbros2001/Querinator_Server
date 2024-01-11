@@ -57,5 +57,12 @@ namespace JWT_Demo.Controllers.DerivedController
         {
             return HandleResult(await Mediator.Send(new DeleteSavedQuery.Command { Id = id }));
         }
+
+        [HttpGet("test")]
+        [AllowAnonymous]
+        public string TestAPI()
+        {
+            return "API Secured";
+        }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTOs;
-using Models.Entity;
 
 namespace JWT_Demo.Controllers.DerivedController
 {
